@@ -1,7 +1,6 @@
 import React,  { Component } from 'react'
 
-// import videoAdapter from '../js/videoAdapter'
-// import videojs from '../js/video'
+import videojs from '../js/video'
 
 export default class GameView extends Component {
   componentDidMount() {
@@ -10,6 +9,7 @@ export default class GameView extends Component {
   render() {
     return (
       <div id="game-view">
+        <video></video>
       </div>
     )
   }
