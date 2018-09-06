@@ -18,7 +18,7 @@ export default class LoginForm extends React.Component{
   }
 
   render () {
-    console.log(this.state)
+    // console.log(this.state)
     return(
           <form onSubmit={this.handleclick}>
             <label>Username</label>

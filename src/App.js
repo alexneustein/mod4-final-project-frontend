@@ -4,6 +4,7 @@ import './App.css';
 import NavBar from './components/NavBar'
 import Container from './components/Container'
 import LoginForm from './components/LoginForm'
+import Cables from './components/Cables'
 
 class App extends Component {
 
@@ -32,11 +33,12 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state, 'from app')
+    // console.log(this.state, 'from app')
     return (
       <div className="App">
         <NavBar />
         <LoginForm setCurrentUser={this.setCurrentUser}/>
+        <Cables />
         <Container />
       </div>
     );
