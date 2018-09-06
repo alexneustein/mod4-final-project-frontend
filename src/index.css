@@ -3,3 +3,16 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+#game-view {
+  background: #222;
+  color: #fff;
+  height: 500px;
+  margin: 15px auto;
+  width: 700px;
+}
+
+#message-input {
+  background: #eee;
+  padding: 20px;
+}
