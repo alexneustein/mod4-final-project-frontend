@@ -1,15 +1,11 @@
 import React,  { Component } from 'react'
-
-import videojs from '../js/video'
+import GameCharades from './GameCharades'
 
 export default class GameView extends Component {
-  componentDidMount() {
-  }
-
   render() {
     return (
       <div id="game-view">
-        <video></video>
+        <GameCharades />
       </div>
     )
   }
