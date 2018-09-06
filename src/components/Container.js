@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 
 export default class Container extends Component {
   render() {
-    const { classes } = this.props
     return (
       <div>
         <Grid container spacing={24}>

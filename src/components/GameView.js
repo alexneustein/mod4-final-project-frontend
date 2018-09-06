@@ -1,11 +1,16 @@
 import React,  { Component } from 'react'
 
-const GameView = () => {
-  return (
-    <div id="game-view">
-      GameContainer
-    </div>
-  )
-}
+// import videoAdapter from '../js/videoAdapter'
+// import videojs from '../js/video'
 
-export default GameView
+export default class GameView extends Component {
+  componentDidMount() {
+  }
+
+  render() {
+    return (
+      <div id="game-view">
+      </div>
+    )
+  }
+}
