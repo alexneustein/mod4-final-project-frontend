@@ -12,11 +12,27 @@ class App extends Component {
   }
 
   setCurrentUser = (newUser) => {
-    this.setState({currentUser: newUser})
+    const bodyObj = {...newUser}
+    return fetch('http://localhost:3000/players', {
+      method: 'POST',
+      // mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bodyObj)
+    })
+    .then(r=>r.json())
+    // .then(console.log)
+    .then(resp => {
+      this.setState({
+        currentUser: resp
+      })
+    })
+
   }
 
   render() {
-    console.log(this.state, 'from App')
+    console.log(this.state, 'from app')
     return (
       <div className="App">
         <NavBar />

@@ -4,7 +4,7 @@ export default class LoginForm extends React.Component{
 
   state = {
     username: '',
-    password: ''
+    password_digest: ''
   }
 
   handleChange = (e) => {
@@ -14,18 +14,17 @@ export default class LoginForm extends React.Component{
 
   handleclick = (e) => {
     e.preventDefault()
-    this.props.setCurrentUser(this.state)
-    this.setState({username: '', password: ''})
+    this.props.setCurrentUser({...this.state})
   }
 
   render () {
-    console.log(this.state, 'From Form')
+    console.log(this.state)
     return(
           <form onSubmit={this.handleclick}>
             <label>Username</label>
-            <input name='username' type='text' placeholder='Username' onChange={this.handleChange}/>
+            <input name='username' value={this.state.username} type='text' placeholder='Username' onChange={this.handleChange}/>
             <label>Password</label>
-            <input name='password' type='password' placeholder='Password' onChange={this.handleChange} />
+            <input name='password_digest' value={this.state.password_digest}type='password' placeholder='Password' onChange={this.handleChange} />
             <button type='submit'>Submit</button>
           </form>
     )
