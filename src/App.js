@@ -9,7 +9,8 @@ import Cables from './components/Cables'
 class App extends Component {
 
   state = {
-    currentUser: {}
+    currentUser: {},
+    messages: []
   }
 
   setCurrentUser = (newUser) => {
@@ -32,13 +33,16 @@ class App extends Component {
 
   }
 
+  updateMessages = (e) => {
+    console.log(e)
+  }
+
   render() {
-    // console.log(this.state, 'from app')
     return (
       <div className="App">
         <NavBar />
         <LoginForm setCurrentUser={this.setCurrentUser}/>
-        <Cables />
+        <Cables messages={this.state.messages} updateMessages={this.updateMessages}/>
         <Container />
       </div>
     );
