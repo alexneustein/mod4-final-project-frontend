@@ -14,7 +14,7 @@ export default class LoginForm extends React.Component{
 
   handleclick = (e) => {
     e.preventDefault()
-    this.props.setCurrentUser({...this.state})
+    this.props.setCurrentUser(this.state)
   }
 
   render () {

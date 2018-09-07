@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import GameCharades from './GameCharades'
 import { ActionCableProvider } from 'react-actioncable-provider'
 
+
 export default class GameView extends Component {
   state = {
     username: ""
