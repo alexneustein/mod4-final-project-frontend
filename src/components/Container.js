@@ -7,9 +7,9 @@ import Grid from '@material-ui/core/Grid';
 
 export default class Container extends Component {
 
-componentDidMount(){
-  fetch('http://localhost:3000/players').then(r=>r.json()).then(console.log)
-}
+// componentDidMount(){
+//   fetch('http://localhost:3000/players').then(r=>r.json())
+// }
 
   render() {
     return (
