@@ -38,12 +38,11 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.currentUser)
     return (
       <div className="App">
-        <NavBar />
-        <LoginForm setCurrentUser={this.setCurrentUser}/>
-        <Cables messages={this.state.messages} updateMessages={this.updateMessages}/>
-        <Container />
+        <NavBar currentUser={this.state.currentUser} setCurrentUser={this.setCurrentUser}/>
+        <Container currentUser={this.state.currentUser}/>
       </div>
     );
   }

@@ -4,40 +4,40 @@ import { ActionCable } from 'react-actioncable-provider'
 export default class Cables extends React.Component{
 
   state = {
-    response: ''
+    user: {},
+    message: ''
+  }
+  componentDidMount(){
+    this.setState({user: this.props.currentUser})
   }
 
 
 
   onReceived = (e) => {
-    console.log(e)
-
+    this.props.createMessage(e.message.message)
   }
 
   sendMessage = () => {
-    console.log(this.refs)
-
-    const message = this.refs.newMessage.value
+    const message = {user: this.props.currentUser, message: this.refs.newMessage.value}
     this.refs.ChatChannel.perform('onChat', {message})
-
+    this.setState({message: ''})
   }
 
-  // componentDidMount(){
-  //
-  // }
+
+  handleInput = (event) => {
+    const value = event.target.value
+    this.setState({message: value})
+  }
 
   render(){
-    console.log(this.subscription)
     return(
       <div>
       <ActionCable
         ref='ChatChannel'
         channel={{channel: 'ChatChannel'}}
-        onReceived={(e) => console.log(e)}
         onReceived={this.onReceived}
        />
-       <p>{this.state.response}</p>
-        <input ref='newMessage' type='text' />
+        <input ref='newMessage' type='text' onChange={this.handleInput} value={this.state.message}/>
         <button onClick={this.sendMessage}>Send</button>
         </div>
     );

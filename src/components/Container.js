@@ -16,10 +16,10 @@ export default class Container extends Component {
       <div>
         <Grid container spacing={24}>
           <Grid item xs>
-            <Paper><GameContainer /></Paper>
+            <Paper><GameContainer currentUser={this.props.currentUser}/></Paper>
           </Grid>
           <Grid item xs={4}>
-            <Paper><MessagesContainer /></Paper>
+            <Paper><MessagesContainer currentUser={this.props.currentUser}/></Paper>
           </Grid>
         </Grid>
       </div>
