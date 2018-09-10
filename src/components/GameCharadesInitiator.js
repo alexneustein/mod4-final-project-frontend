@@ -3,6 +3,7 @@ import { ActionCable } from 'react-actioncable-provider'
 const Peer = require('simple-peer')
 
 let p1
+let streamObj
 
 export default class GameCharades extends Component {
   state = {
@@ -13,6 +14,8 @@ export default class GameCharades extends Component {
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then(stream => {
         p1 = new Peer({ initiator: true, stream: stream, trickle: false })
+        console.log("STREAM OBJ", stream)
+        streamObj = stream
 
         p1.on('signal', (data) => {
           console.log('p1 signal', data)
@@ -25,16 +28,19 @@ export default class GameCharades extends Component {
     console.log("componentDidUpdate SIGNAL", this.state.signal)
 
     if('rec_signal' in this.state.signal) {
+      // console.log("rec_signal", this.state.signal.rec_signal)
       p1.signal(this.state.signal.rec_signal)
-      p1.on('connect', () => {
-        console.log('p1 connected')
-      })
     }
 
     if('rec_stream' in this.state.signal) {
-      this.sendMessage('send_signal', {init_stream: ""})
+      // p1.send(streamObj)
+      // console.log(p1)
+      this.sendMessage('send_signal', {init_stream: streamObj})
     }
 
+    p1.on('connect', () => {
+      console.log('p1 connected')
+    })
     p1.on('error', (error) => console.error('p1 error', error))
     p1.on('close', () => console.log('p1 connection closed'))
   }
@@ -51,6 +57,9 @@ export default class GameCharades extends Component {
     this.refs.gameSignalChannel.perform(method, {forReceiver})
   }
 
+  testMessage = () => {
+  }
+
   render() {
     return (
       <div>
@@ -59,7 +68,7 @@ export default class GameCharades extends Component {
         {/* <video id="received_video" autoPlay muted></video> */}
         {/* <video id="local_video" autoPlay muted></video> */}
         <div>
-          {/* <button onClick={this.sendMessage}>test</button> */}
+          <button onClick={this.testMessage}>test</button>
         </div>
       </div>
     )
