@@ -14,7 +14,7 @@ export default class GameCharades extends Component {
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then(stream => {
         p1 = new Peer({ initiator: true, stream: stream, trickle: false })
-        console.log("STREAM OBJ", stream)
+        // console.log("STREAM OBJ", stream)
         streamObj = stream
 
         const video = document.querySelector('video')
@@ -22,14 +22,14 @@ export default class GameCharades extends Component {
         video.play()
 
         p1.on('signal', (data) => {
-          console.log('p1 signal', data)
+          // console.log('p1 signal', data)
           this.sendMessage('send_signal', {init_signal: data})
         })
       })
   }
 
   componentDidUpdate() {
-    console.log("componentDidUpdate SIGNAL", this.state.signal)
+    // console.log("componentDidUpdate SIGNAL", this.state.signal)
 
     if('rec_signal' in this.state.signal) {
       p1.signal(this.state.signal.rec_signal)
@@ -40,7 +40,7 @@ export default class GameCharades extends Component {
     }
 
     p1.on('connect', () => {
-      console.log('p1 connected')
+      // console.log('p1 connected')
     })
     p1.on('error', (error) => console.error('p1 error', error))
     p1.on('close', () => console.log('p1 connection closed'))
@@ -49,7 +49,7 @@ export default class GameCharades extends Component {
   onReceived = e => {
     if(e.data.forInitiator) {
       this.setState({signal: e.data.forInitiator}, () => {
-        console.log("forInitiator", this.state.signal)
+        // console.log("forInitiator", this.state.signal)
       })
     }
   }

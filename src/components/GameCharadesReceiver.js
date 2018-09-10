@@ -12,26 +12,26 @@ export default class GameCharades extends Component {
   componentDidMount() {}
 
   componentDidUpdate() {
-    console.log("componentDidUpdate SIGNAL", this.state.signal)
+    // console.log("componentDidUpdate SIGNAL", this.state.signal)
 
     if('init_signal' in this.state.signal) {
       p1 = new Peer({ trickle: false })
       p1.signal(this.state.signal.init_signal)
       p1.on('signal', (data) => {
-        console.log('p1 signal', data)
+        // console.log('p1 signal', data)
         this.sendMessage('send_signal', {rec_signal: data})
       })
     }
 
     p1.on('stream', (stream) => {
-      console.log('p1 received', stream)
+      // console.log('p1 received', stream)
       const video = document.querySelector('video')
       video.srcObject = stream
       video.play()
     })
 
     p1.on('connect', () => {
-      console.log('p1 connected')
+      // console.log('p1 connected')
       this.sendMessage('send_signal', {rec_stream: ""})
     })
     p1.on('error', (error) => console.error('p1 error', error))
@@ -42,7 +42,7 @@ export default class GameCharades extends Component {
   onReceived = e => {
     if(e.data.forReceiver) {
       this.setState({signal: e.data.forReceiver}, () => {
-        console.log("forReceiver", this.state.signal)
+        // console.log("forReceiver", this.state.signal)
       })
     }
   }
