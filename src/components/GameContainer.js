@@ -49,33 +49,23 @@ export default class GameContainer extends Component {
     e.preventDefault()
     const guess = e.target.guess.value
     const answer = this.state.answer
-    if (guess.toLowerCase() === answer.toLowerCase()){
-      console.log('Correct!')
-      if(this.checkRoundInner()){
-        this.setState(prevState => ({
-          score: prevState.score + 1,
-          round: prevState.round + 1
-        }))
-      } else{
-        this.setState(prevState => ({
-          score: prevState.score + 1,
-          round: prevState.round + 1,
-          answer: this.state.gamePrompts[prevState.round].name
-        }))
-      }
-      this.sendScore()
-    } else {
-      console.log('Sorry, try again!')
-    }
-    this.setState({guessField: ''})
+    this.gameDigest(guess, answer)
   }
 
-  sendScore = () => {
 
-    const gameScore = this.state.score + 1
-    console.log(gameScore)
-    const game_score = {game_score: gameScore}
-    this.refs.ScoreChannel.perform('onGameChange', {game_score})
+gameDigest = (guess, answer) => {
+  if (guess.toLowerCase() === answer.toLowerCase()){
+    const gameHash = {score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gamePrompts[this.state.round].name}
+    this.sendScore(gameHash)
+    console.log('Correct!')
+  } else {
+    console.log('Sorry, try again!')
+  }
+  this.setState({guessField: ''})
+}
+
+  sendScore = (gameHash) => {
+    this.refs.ScoreChannel.perform('onGameChange', {gameHash})
     this.setState({message: ''})
   }
 
@@ -90,7 +80,7 @@ export default class GameContainer extends Component {
   endGame = () => {
     const gameID = this.state.gameObject.id
     const currentUser = this.props.currentUser
-    console.log(`Game over! You scored ${this.state.score} points!`)
+    // console.log(`Game over! You scored ${this.state.score} points!`)
     this.setState({
       round: 0,
       answer: null,
@@ -107,9 +97,22 @@ export default class GameContainer extends Component {
     }).then(r=>r.json()).then(console.log)
   }
 
-  scoreReceived = (e) => {
+  dataReceived = (e) => {
     console.log(e)
-    // this.setScore()
+    if(this.checkRoundInner()){
+      this.setState(prevState => ({
+        ...prevState,
+        score: prevState.score + 1,
+        round: prevState.round + 1
+      }))
+    } else {
+      this.setState(prevState => ({
+        ...prevState,
+        score: prevState.score + 1,
+        round: prevState.round + 1,
+        answer: this.state.gamePrompts[prevState.round].name
+      }))
+    }
   }
 
   render() {
@@ -119,7 +122,7 @@ export default class GameContainer extends Component {
         <ActionCable
           ref='ScoreChannel'
           channel={{channel:'ScoreChannel'}}
-          onReceived={this.scoreReceived}
+          onReceived={this.dataReceived}
         />
         <GameView />
         <h2>{this.state.answer}</h2>
@@ -128,9 +131,7 @@ export default class GameContainer extends Component {
           : <button onClick={this.gameOn}>Game On!</button>
         }
         <h3>
-          {this.currentUser ?
-            this.currentUser.games :
-          'Welcome'}
+          {this.state.score}
         </h3>
 
       </div>
