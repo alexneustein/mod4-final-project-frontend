@@ -1,4 +1,5 @@
 import React,  { Component } from 'react'
+import { ActionCable } from 'react-actioncable-provider'
 
 import GameView from './GameView'
 import MessageInput from './MessageInput'
@@ -13,6 +14,10 @@ export default class GameContainer extends Component {
     gamePrompts: [],
     guessField: '',
     gameObject: {}
+  }
+
+  componentDidUpdate(){
+    this.checkRound() ? this.endGame() : ''
   }
 
   gameOn = () => {
@@ -58,9 +63,20 @@ export default class GameContainer extends Component {
           answer: this.state.gamePrompts[prevState.round].name
         }))
       }
+      this.sendScore()
     } else {
       console.log('Sorry, try again!')
     }
+    this.setState({guessField: ''})
+  }
+
+  sendScore = () => {
+
+    const gameScore = this.state.score + 1
+    console.log(gameScore)
+    const game_score = {game_score: gameScore}
+    this.refs.ScoreChannel.perform('onGameChange', {game_score})
+    this.setState({message: ''})
   }
 
   checkRound = () => {
@@ -87,19 +103,26 @@ export default class GameContainer extends Component {
       headers: {
         'Content-Type':'application/json'
       },
-      body: {winner_id: currentUser.id}
+      body: JSON.stringify({winner_id: currentUser.id})
     }).then(r=>r.json()).then(console.log)
   }
 
-  componentDidUpdate(){
-    this.checkRound() ? this.endGame() : ''
+  scoreReceived = (e) => {
+    console.log(e)
+    // this.setScore()
   }
 
   render() {
     // console.log(this.state)
     return (
       <div>
+        <ActionCable
+          ref='ScoreChannel'
+          channel={{channel:'ScoreChannel'}}
+          onReceived={this.scoreReceived}
+        />
         <GameView />
+        <h2>{this.state.answer}</h2>
         {this.state.gameOn
           ? <MessageInput inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
           : <button onClick={this.gameOn}>Game On!</button>

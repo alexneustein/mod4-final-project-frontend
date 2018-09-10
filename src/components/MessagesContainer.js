@@ -20,13 +20,13 @@ export default class MessagesContainer extends Component {
   render() {
     return (
       <div>
-        <div style={{overflow: 'scroll', height: 100, position: 'relative'}}>
+        <div className='chat-box'>
+          <h1>Messages</h1>
         {this.state.messages.map((messageBody, i) => [
           <Message key={i} content={messageBody} currentUser={this.props.currentUser} />
         ])}
       </div>
         <Cables createMessage={this.createMessage} currentUser={this.props.currentUser}/>
-
       </div>
     )
   }

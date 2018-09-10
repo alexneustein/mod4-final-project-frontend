@@ -1,12 +1,15 @@
 import React from 'react';
 import { ActionCable } from 'react-actioncable-provider'
 
+import ChatInput from './ChatInput'
+
 export default class Cables extends React.Component{
 
   state = {
     user: {},
     message: ''
   }
+  
   componentDidMount(){
     this.setState({user: this.props.currentUser})
   }
@@ -14,11 +17,22 @@ export default class Cables extends React.Component{
 
 
   onReceived = (e) => {
+    console.log(e)
     this.props.createMessage(e.message.message)
   }
 
   sendMessage = () => {
-    const message = {user: this.props.currentUser, message: this.refs.newMessage.value}
+    const postUser = () => {
+      if(this.props.currentUser.username){
+        return this.props.currentUser
+      } else {
+        return {username: `Anonymous`}
+      }
+    }
+
+    const postMessage = this.state.message
+    console.log(postUser)
+    const message = {user: postUser(), message: postMessage}
     this.refs.ChatChannel.perform('onChat', {message})
     this.setState({message: ''})
   }
@@ -37,8 +51,7 @@ export default class Cables extends React.Component{
         channel={{channel: 'ChatChannel'}}
         onReceived={this.onReceived}
        />
-        <input ref='newMessage' type='text' onChange={this.handleInput} value={this.state.message}/>
-        <button onClick={this.sendMessage}>Send</button>
+       <ChatInput  sendMessage={this.sendMessage} handleInput={this.handleInput} value={this.state.message}/>
         </div>
     );
   }

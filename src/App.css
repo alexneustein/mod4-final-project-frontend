@@ -22,6 +22,25 @@
   font-size: large;
 }
 
+.chat-messages{
+  /* position: absolute; */
+  padding-left: 2vw;
+  padding-right: 2vw;
+  padding-bottom: 0.1vh;
+  padding-top: 0.1vh;
+  text-align: justify;
+  bottom:     0;
+  max-height: 55vh;
+}
+
+.chat-box{
+  overflow:   scroll;
+  position:   relative;
+  width:      25vw;
+  height:     55vh;
+ /* flex-direction: column-reverse; */
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

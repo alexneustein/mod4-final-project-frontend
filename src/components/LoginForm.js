@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link, Redirect } from 'react-router-dom'
+
 
 export default class LoginForm extends React.Component{
 
@@ -14,7 +16,7 @@ export default class LoginForm extends React.Component{
 
   handleclick = (e) => {
     e.preventDefault()
-    this.props.setCurrentUser(this.state)
+    this.props.setCurrentUser({player: {...this.state}})
   }
 
   render () {
@@ -24,7 +26,7 @@ export default class LoginForm extends React.Component{
             <label>Username</label>
             <input name='username' value={this.state.username} type='text' placeholder='Username' onChange={this.handleChange}/>
             <label>Password</label>
-            <input name='password_digest' value={this.state.password_digest}type='password' placeholder='Password' onChange={this.handleChange} />
+            <input name='password_digest' value={this.state.password_digest} type='password_digest' placeholder='Password' onChange={this.handleChange} />
             <button type='submit'>Submit</button>
           </form>
     )

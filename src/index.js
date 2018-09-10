@@ -9,7 +9,9 @@ import ActionCable from 'actioncable'
 
 ReactDOM.render(
   <ActionCableProvider url='ws://localhost:3000/cable'>
+  <Router>
     <App />
+  </Router>
   </ActionCableProvider>,
   document.getElementById('root'));
 registerServiceWorker();

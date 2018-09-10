@@ -6,6 +6,8 @@ import Container from './components/Container'
 import LoginForm from './components/LoginForm'
 import Cables from './components/Cables'
 
+import {Route, Switch, Redirect} from 'react-router-dom'
+
 class App extends Component {
 
   state = {
@@ -30,6 +32,7 @@ class App extends Component {
         currentUser: resp
       })
     })
+    .then( () => <Redirect to='/gameon' />)
 
   }
 
@@ -42,7 +45,10 @@ class App extends Component {
     return (
       <div className="App">
         <NavBar currentUser={this.state.currentUser} setCurrentUser={this.setCurrentUser}/>
-        <Container currentUser={this.state.currentUser}/>
+        <Switch>
+        {/* <Route path='/' render={props => <LoginForm setCurrentUser={this.setCurrentUser} {...props} /> } /> */}
+        <Route path='/gameon' render={props => <Container currentUser={this.state.currentUser} {...props}/> }/>
+        </Switch>
       </div>
     );
   }
