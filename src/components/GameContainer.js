@@ -8,7 +8,7 @@ export default class GameContainer extends Component {
 
   state = {
     score: 0,
-    answer: null,
+    answer: '',
     round: 0,
     gameOn: false,
     gamePrompts: [],
@@ -31,13 +31,21 @@ export default class GameContainer extends Component {
         'Content-Type':'application/json'
       }
     }).then(r=>r.json()).then(resp => {
-      this.setState({
-        gamePrompts: resp.prompts,
-        answer: resp.prompts[0].name,
-        gameObject: resp
-      })
+      const gameObj = {
+      // gamePrompts: resp.prompts,
+      answer: resp.prompts[0].name,
+      gameObject: resp,
+      gameOn: true,
+      round: 1
+    }
+      this.sendGameOn(gameObj)
+      // this.setState({gameObj})
     }
     )
+  }
+
+  sendGameOn = (gameHash) => {
+    this.refs.ScoreChannel.perform('onGameChange', {gameHash})
   }
 
   inputChange = (e) => {
@@ -54,8 +62,12 @@ export default class GameContainer extends Component {
 
 
 gameDigest = (guess, answer) => {
-  if (guess.toLowerCase() === answer.toLowerCase()){
-    const gameHash = {gamePrompts: this.state.gamePrompts, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gamePrompts[this.state.round].name}
+  console.log(this.state)
+  if (this.checkRoundInner()){
+    const gameHash = {score: this.state.score + 1, round: this.state.round + 1, answer: ''}
+    this.sendScore(gameHash)
+  } else if (guess.toLowerCase() === answer.toLowerCase()){
+    const gameHash = {score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name}
     this.sendScore(gameHash)
     console.log('Correct!')
   } else {
@@ -85,7 +97,7 @@ gameDigest = (guess, answer) => {
       round: 0,
       answer: null,
       score: 0,
-      prompts: [],
+      // gamePrompts: [],
       gameOn: false
     })
     fetch(`http://localhost:3000/games/${gameID}`, {
@@ -98,8 +110,19 @@ gameDigest = (guess, answer) => {
   }
 
   dataReceived = (e) => {
-    console.log("DATA", e)
-    if(this.checkRoundInner()){
+    // console.log("sent data", e.game_data.gameHash)
+    // console.log("current state", this.state)
+    const gameAnswer = e.game_data.gameHash.answer
+    const gameHash = e.game_data.gameHash
+    const gameObject = e.game_data.gameHash.gameObject
+    console.log(e.game_data.gameHash.gameObject)
+    if(gameHash.round === 1){
+      // console.log('Round 1???')
+      this.setState({
+        answer: gameAnswer,
+        gameObject: gameObject
+      }, () => console.log(this.state))
+    } else if (this.checkRoundInner()){
       this.setState(prevState => ({
         ...prevState,
         score: prevState.score + 1,
@@ -110,7 +133,7 @@ gameDigest = (guess, answer) => {
         ...prevState,
         score: prevState.score + 1,
         round: prevState.round + 1,
-        answer: this.state.gamePrompts[prevState.round].name
+        answer: this.state.gameObject.prompts[prevState.round].name
       }))
     }
   }
@@ -124,7 +147,7 @@ gameDigest = (guess, answer) => {
           channel={{channel:'ScoreChannel'}}
           onReceived={this.dataReceived}
         />
-        <GameView />
+        {/* <GameView /> */}
         <h2>{this.state.answer}</h2>
         {this.state.gameOn
           ? <MessageInput inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
