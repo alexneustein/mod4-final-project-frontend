@@ -3,7 +3,6 @@ import { ActionCable } from 'react-actioncable-provider'
 const Peer = require('simple-peer')
 
 let p1
-let streamObj
 
 export default class GameCharades extends Component {
   state = {
@@ -13,8 +12,6 @@ export default class GameCharades extends Component {
   componentDidMount() {
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then(stream => {
-        streamObj = stream
-        // console.log("STREAM", streamObj)
         p1 = new Peer({ initiator: true, stream: stream, trickle: false })
 
         p1.on('signal', (data) => {
@@ -22,7 +19,6 @@ export default class GameCharades extends Component {
           this.sendMessage('send_signal', {init_signal: data})
         })
       })
-    // console.log("GameCharades", this.props.username)
   }
 
   componentDidUpdate() {
@@ -32,12 +28,11 @@ export default class GameCharades extends Component {
       p1.signal(this.state.signal.rec_signal)
       p1.on('connect', () => {
         console.log('p1 connected')
-
-        console.log("FDSAFDSAFDSA", streamObj)
-        this.sendMessage('send_signal', {init_stream: ""})
-
-        // this.sendMessage('send_signal', {'init_connect': data})
       })
+    }
+
+    if('rec_stream' in this.state.signal) {
+      this.sendMessage('send_signal', {init_stream: ""})
     }
 
     p1.on('error', (error) => console.error('p1 error', error))
@@ -53,9 +48,7 @@ export default class GameCharades extends Component {
   }
 
   sendMessage = (method, forReceiver) => {
-    // message = JSON.stringify(message)
     this.refs.gameSignalChannel.perform(method, {forReceiver})
-    // this.refs.gameChannelInitiator.perform(method, {message: "Is this the receiver?"})
   }
 
   render() {

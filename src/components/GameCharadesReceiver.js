@@ -15,17 +15,15 @@ export default class GameCharades extends Component {
 
   componentDidUpdate() {
     console.log("componentDidUpdate SIGNAL", this.state.signal)
-    // console.log("P1", p1)
 
     if('init_signal' in this.state.signal) {
       p1.signal(this.state.signal.init_signal)
       p1.on('signal', (data) => {
         console.log('p1 signal', data)
         this.sendMessage('send_signal', {rec_signal: data})
-        // p2.signal(data)
-        p1.on('connect', (data) => {
+        p1.on('connect', () => {
           console.log('p1 connected')
-          this.sendMessage('send_signal', {rec_stream: data})
+          this.sendMessage('send_signal', {rec_stream: ""})
         })
       })
 
@@ -35,10 +33,8 @@ export default class GameCharades extends Component {
       console.log("INITSREAM", this.state)
       p1.on('stream', (stream) => {
         console.log('p1 received', stream)
-        // this.sendMessage('send_signal', {'rec_stream': data})
         const video = document.querySelector('video')
         video.src = window.URL.createObjectURL(stream)
-        // video.play()
       })
     }
 
@@ -56,7 +52,6 @@ export default class GameCharades extends Component {
   }
 
   sendMessage = (method, forInitiator) => {
-    // message = JSON.stringify(message)
     this.refs.gameSignalChannel.perform(method, {forInitiator})
   }
 
