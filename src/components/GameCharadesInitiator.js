@@ -17,12 +17,12 @@ export default class GameCharades extends Component {
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then(stream => {
         streamObj = stream
-        console.log("STREAM", streamObj)
-        p1 = new Peer({ initiator: true, stream: streamObj, trickle: false })
+        // console.log("STREAM", streamObj)
+        p1 = new Peer({ initiator: true, stream: stream, trickle: false })
 
         p1.on('signal', (data) => {
           console.log('p1 signal', data)
-          this.sendMessage('send_signal', {"init_signal": data})
+          this.sendMessage('send_signal', {init_signal: data})
         })
         // console.log("STREAM", streamObj)
 
@@ -65,7 +65,8 @@ export default class GameCharades extends Component {
         // p1.on('stream', (stream) => {
         //   console.log('p1 received', stream)
         // })
-        this.sendMessage('send_signal', {'init_stream': streamObj})
+        console.log("FDSAFDSAFDSA", streamObj)
+        this.sendMessage('send_signal', {init_stream: ""})
 
         // this.sendMessage('send_signal', {'init_connect': data})
       })
@@ -181,7 +182,7 @@ export default class GameCharades extends Component {
       <div>
         <ActionCable ref="gameSignalChannel" channel={{channel: 'GameSignalChannel'}} onReceived={this.onReceived} />
         {/* <ActionCable ref="gameChannelReceiver" channel={{channel: 'GameChannelReceiver'}} /> */}
-        <video id="received_video" autoPlay muted></video>
+        {/* <video id="received_video" autoPlay muted></video> */}
         {/* <video id="local_video" autoPlay muted></video> */}
         <div>
           {/* <button onClick={this.sendMessage}>test</button> */}

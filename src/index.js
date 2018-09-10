@@ -9,8 +9,8 @@ import ActionCable from 'actioncable'
 
 ReactDOM.render(
   <ActionCableProvider url='ws://localhost:3000/cable'>
+  {/* // <ActionCableProvider url='ws://10.39.107.200:3000/cable'> */}
   <Router>
-  {/* <ActionCableProvider url='ws://10.39.110.201:3000/cable'> */}
     <App />
   </Router>
   </ActionCableProvider>,
