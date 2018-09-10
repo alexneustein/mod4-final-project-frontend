@@ -32,7 +32,6 @@ class App extends Component {
         currentUser: resp
       })
     })
-    .then( () => <Redirect to='/gameon' />)
 
   }
 
