@@ -98,7 +98,7 @@ gameDigest = (guess, answer) => {
   }
 
   dataReceived = (e) => {
-    console.log(e)
+    console.log("DATA", e)
     if(this.checkRoundInner()){
       this.setState(prevState => ({
         ...prevState,
