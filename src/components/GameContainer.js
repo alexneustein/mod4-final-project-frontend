@@ -55,7 +55,7 @@ export default class GameContainer extends Component {
 
 gameDigest = (guess, answer) => {
   if (guess.toLowerCase() === answer.toLowerCase()){
-    const gameHash = {gamePrompts: this.state.gamePrompts, core: this.state.score + 1, round: this.state.round + 1, answer: this.state.gamePrompts[this.state.round].name}
+    const gameHash = {gamePrompts: this.state.gamePrompts, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gamePrompts[this.state.round].name}
     this.sendScore(gameHash)
     console.log('Correct!')
   } else {
