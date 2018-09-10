@@ -17,6 +17,10 @@ export default class GameCharades extends Component {
         console.log("STREAM OBJ", stream)
         streamObj = stream
 
+        const video = document.querySelector('video')
+        video.srcObject = stream
+        video.play()
+
         p1.on('signal', (data) => {
           console.log('p1 signal', data)
           this.sendMessage('send_signal', {init_signal: data})
@@ -28,13 +32,10 @@ export default class GameCharades extends Component {
     console.log("componentDidUpdate SIGNAL", this.state.signal)
 
     if('rec_signal' in this.state.signal) {
-      // console.log("rec_signal", this.state.signal.rec_signal)
       p1.signal(this.state.signal.rec_signal)
     }
 
     if('rec_stream' in this.state.signal) {
-      // p1.send(streamObj)
-      // console.log(p1)
       this.sendMessage('send_signal', {init_stream: streamObj})
     }
 
@@ -66,7 +67,7 @@ export default class GameCharades extends Component {
         <ActionCable ref="gameSignalChannel" channel={{channel: 'GameSignalChannel'}} onReceived={this.onReceived} />
         {/* <ActionCable ref="gameChannelReceiver" channel={{channel: 'GameChannelReceiver'}} /> */}
         {/* <video id="received_video" autoPlay muted></video> */}
-        {/* <video id="local_video" autoPlay muted></video> */}
+        <video id="local_video" autoPlay muted></video>
         <div>
           <button onClick={this.testMessage}>test</button>
         </div>

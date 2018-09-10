@@ -124,7 +124,7 @@ gameDigest = (guess, answer) => {
           channel={{channel:'ScoreChannel'}}
           onReceived={this.dataReceived}
         />
-        {/* <GameView /> */}
+        <GameView />
         <h2>{this.state.answer}</h2>
         {this.state.gameOn
           ? <MessageInput inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>

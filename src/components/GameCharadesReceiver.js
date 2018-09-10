@@ -23,18 +23,6 @@ export default class GameCharades extends Component {
       })
     }
 
-    // if('init_stream' in this.state.signal) {
-    //   // p1.addStream(stream)
-    //   console.log("INITSREAM", this.state)
-    //
-    //   p1.on('stream', (stream) => {
-    //     console.log('p1 received', stream)
-    //     const video = document.querySelector('video')
-    //     video.srcObject = stream
-    //     video.play()
-    //   })
-    // }
-
     p1.on('stream', (stream) => {
       console.log('p1 received', stream)
       const video = document.querySelector('video')
@@ -42,9 +30,6 @@ export default class GameCharades extends Component {
       video.play()
     })
 
-    // p1.on('data', function (data) {
-    //   console.log("HELLO GOT DATA", data)
-    // })
     p1.on('connect', () => {
       console.log('p1 connected')
       this.sendMessage('send_signal', {rec_stream: ""})
