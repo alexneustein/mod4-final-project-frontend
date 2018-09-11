@@ -3,6 +3,7 @@ import { ActionCable } from 'react-actioncable-provider'
 import GameView from './GameView'
 import MessageInput from './MessageInput'
 import Button from '../MaterialComponents/Button'
+// import GameSnackBar from '../MaterialComponents/GameSnackBar'
 
 // import Snackbar from '@material-ui/core/Snackbar'
 
@@ -16,7 +17,9 @@ export default class GameContainer extends Component {
     performer: 0,
     gamePrompts: [],
     guessField: '',
-    gameObject: {}
+    gameObject: {},
+    // snackOpen: false,
+    // snackMessage: ''
   }
 
   componentDidUpdate(){
@@ -47,9 +50,17 @@ export default class GameContainer extends Component {
     }
     )
   }
+  // snackBarOpen = () => {
+  //   this.setState({snackOpen: true})
+  // }
 
   sendGameOn = (gameHash) => {
     this.refs.ScoreChannel.perform('onGameChange', {gameHash})
+  }
+
+  sendScore = (gameHash) => {
+    this.refs.ScoreChannel.perform('onGameChange', {gameHash})
+    this.setState({message: ''})
   }
 
   inputChange = (e) => {
@@ -74,17 +85,13 @@ gameDigest = (guess, answer, performer) => {
   } else if (guess.toLowerCase() === answer.toLowerCase()){
     const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name}
     this.sendScore(gameHash)
-    console.log('Correct!')
+    // this.setState({snackMessage: 'Correct!'})
+    // this.snackBarOpen()
   } else {
     console.log('Sorry, try again!')
   }
   this.setState({guessField: ''})
 }
-
-  sendScore = (gameHash) => {
-    this.refs.ScoreChannel.perform('onGameChange', {gameHash})
-    this.setState({message: ''})
-  }
 
   checkRound = () => {
     return this.state.round > 5
@@ -128,7 +135,7 @@ gameDigest = (guess, answer, performer) => {
         gameObject: gameObject,
         gameOn: true,
         performer: gameHash.performer
-      }, () => console.log('dataReceived after stateset', this.state))
+      })
     } else if (this.checkRoundInner()){
       this.setState(prevState => ({
         ...prevState,
@@ -146,7 +153,7 @@ gameDigest = (guess, answer, performer) => {
   }
 
   render() {
-    // console.log(this.state)
+    console.log(this.state)
     return (
       <div>
         <ActionCable
@@ -155,6 +162,7 @@ gameDigest = (guess, answer, performer) => {
           onReceived={this.dataReceived}
         />
         <GameView />
+        {/* <GameSnackBar open={this.state.snackOpen} message={this.state.snackMessage}/> */}
         {this.state.gameOn
           ? <MessageInput answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
           :  <Button onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>

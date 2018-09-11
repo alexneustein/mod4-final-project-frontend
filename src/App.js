@@ -63,7 +63,6 @@ class App extends Component {
     // console.log(this.state)
     // const loggedIn = !!this.state.currentUser.id
     const loggedIn = true
-    console.log(loggedIn)
     return (
       <div className="App">
         <Fragment>
