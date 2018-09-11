@@ -11,9 +11,7 @@ export default class GameView extends Component {
   render() {
     return (
       <div id="game-view">
-        {/* <ActionCableProvider url="ws://localhost:3000/cable"> */}
         {document.location.hash === "#1" ? <GameCharadesReceiver username={this.state.username} /> : <GameCharadesInitiator username={this.state.username} /> }
-        {/* </ActionCableProvider> */}
         {/* <button onClick={this.setUser1}>User 1</button> */}
         {/* <button onClick={this.setUser2}>User 2</button> */}
       </div>

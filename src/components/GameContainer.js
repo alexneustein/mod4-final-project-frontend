@@ -120,7 +120,8 @@ gameDigest = (guess, answer) => {
       // console.log('Round 1???')
       this.setState({
         answer: gameAnswer,
-        gameObject: gameObject
+        gameObject: gameObject,
+        gameOn: true
       }, () => console.log(this.state))
     } else if (this.checkRoundInner()){
       this.setState(prevState => ({
@@ -147,7 +148,7 @@ gameDigest = (guess, answer) => {
           channel={{channel:'ScoreChannel'}}
           onReceived={this.dataReceived}
         />
-        {/* <GameView /> */}
+        <GameView />
         <h2>{this.state.answer}</h2>
         {this.state.gameOn
           ? <MessageInput inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>

@@ -58,9 +58,6 @@ export default class GameAudiooReceiver extends Component {
         {/* <ActionCable ref="gameChannelReceiver" channel={{channel: 'GameChannelReceiver'}} onReceived={this.onReceived} /> */}
         <video id="received_video" autoPlay muted></video>
         {/* <video id="local_video" autoPlay muted></video> */}
-        <div>
-          {/* <button onClick={this.sendMessage}>test</button> */}
-        </div>
       </div>
     )
   }

@@ -17,7 +17,7 @@ export default class GameCharades extends Component {
         // console.log("STREAM OBJ", stream)
         streamObj = stream
 
-        const video = document.querySelector('video')
+        const video = document.querySelector('video#local_video')
         video.srcObject = stream
         video.play()
 
@@ -67,9 +67,9 @@ export default class GameCharades extends Component {
         <ActionCable ref="gameSignalChannel" channel={{channel: 'GameSignalChannel'}} onReceived={this.onReceived} />
         {/* <ActionCable ref="gameChannelReceiver" channel={{channel: 'GameChannelReceiver'}} /> */}
         {/* <video id="received_video" autoPlay muted></video> */}
-        <video id="local_video" autoPlay muted></video>
         <div>
-          <button onClick={this.testMessage}>test</button>
+          <video id="local_video" autoPlay muted></video>
+          <video id="received_video" autoPlay muted></video>
         </div>
       </div>
     )

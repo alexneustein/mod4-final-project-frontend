@@ -68,9 +68,6 @@ export default class GameAudiooInitiator extends Component {
         {/* <ActionCable ref="gameChannelReceiver" channel={{channel: 'GameChannelReceiver'}} /> */}
         {/* <video id="received_video" autoPlay muted></video> */}
         <video id="local_video" autoPlay muted></video>
-        <div>
-          <button onClick={this.testMessage}>test</button>
-        </div>
       </div>
     )
   }
