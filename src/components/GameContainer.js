@@ -18,13 +18,9 @@ export default class GameContainer extends Component {
     gamePrompts: [],
     guessField: '',
     gameObject: {},
-    // snackOpen: false,
-    // snackMessage: ''
   }
 
-  componentDidUpdate(){
-    this.checkRound() ? this.endGame() : ''
-  }
+
 
   gameOn = () => {
     this.setState({
@@ -46,13 +42,10 @@ export default class GameContainer extends Component {
       performer: this.props.currentUser.id
     }
       this.sendGameOn(gameObj)
-      // this.setState({gameObj})
     }
     )
   }
-  // snackBarOpen = () => {
-  //   this.setState({snackOpen: true})
-  // }
+
 
   sendGameOn = (gameHash) => {
     this.refs.ScoreChannel.perform('onGameChange', {gameHash})
@@ -60,6 +53,7 @@ export default class GameContainer extends Component {
 
   sendScore = (gameHash) => {
     this.refs.ScoreChannel.perform('onGameChange', {gameHash})
+    console.log(gameHash)
     this.setState({message: ''})
   }
 
@@ -83,7 +77,7 @@ gameDigest = (guess, answer, performer) => {
     const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: ''}
     this.sendScore(gameHash)
   } else if (guess.toLowerCase() === answer.toLowerCase()){
-    const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name}
+    const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name, gameObject: this.state.gameObject}
     this.sendScore(gameHash)
     // this.setState({snackMessage: 'Correct!'})
     // this.snackBarOpen()
@@ -150,6 +144,11 @@ gameDigest = (guess, answer, performer) => {
         answer: this.state.gameObject.prompts[prevState.round].name
       }))
     }
+  }
+
+  componentDidUpdate(){
+    this.checkRound() ? this.endGame() : ''
+
   }
 
   render() {

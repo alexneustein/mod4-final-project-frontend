@@ -10,10 +10,10 @@ import Grid from '@material-ui/core/Grid'
 import {Route, Switch, Redirect} from 'react-router-dom'
 
 class App extends Component {
-  // username: 'peterthegeek', password: '99Kumalosians'
+  // username: 'peterthegeek', id: 1
 
   state = {
-    currentUser: {id: 2, username: 'dan'},
+    currentUser: {username: 'peterthegeek', id: 1},
     messages: []
     }
 
