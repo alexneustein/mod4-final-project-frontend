@@ -1,11 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 
-const authWrapper = (wrappedComponent) => {
+const AuthWrapper = (WrappedComponent) => {
   return class extends React.Component {
     render () {
       if (this.props.loggedIn){
-        return <wrappedComponent {...this.props} />
+        return <WrappedComponent {...this.props} />
       } else {
         return <Redirect to='/login' />
       }
@@ -13,4 +13,4 @@ const authWrapper = (wrappedComponent) => {
   }
 }
 
-export default authWrapper
+export default AuthWrapper

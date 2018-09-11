@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import NavBar from './components/NavBar'
@@ -13,9 +13,32 @@ class App extends Component {
   state = {
     currentUser: {},
     messages: []
-  }
+    }
 
   setCurrentUser = (newUser) => {
+    const bodyObj = {...newUser}
+    return fetch('http://localhost:3000/login', {
+      method: 'POST',
+      // mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bodyObj)
+    })
+    .then(r=>r.json())
+    // .then(console.log)
+    .then(resp => {
+      this.setState({
+        currentUser: resp
+      })
+    })
+  }
+
+  updateMessages = (e) => {
+    console.log(e)
+  }
+
+  signUpUser = (newUser) => {
     const bodyObj = {...newUser}
     return fetch('http://localhost:3000/players', {
       method: 'POST',
@@ -32,22 +55,23 @@ class App extends Component {
         currentUser: resp
       })
     })
-
-  }
-
-  updateMessages = (e) => {
-    console.log(e)
   }
 
   render() {
-    console.log(this.state.currentUser)
+    console.log(this.state)
+    const loggedIn = !!this.state.currentUser.id
+    console.log(loggedIn)
     return (
       <div className="App">
-        <NavBar currentUser={this.state.currentUser} setCurrentUser={this.setCurrentUser}/>
-        <Switch>
-        {/* <Route path='/' render={props => <LoginForm setCurrentUser={this.setCurrentUser} {...props} /> } /> */}
-        <Route path='/gameon' render={props => <Container currentUser={this.state.currentUser} {...props}/> }/>
-        </Switch>
+        <Fragment>
+          <NavBar currentUser={this.state.currentUser} loggedIn={ loggedIn } setCurrentUser={this.setCurrentUser}/>
+            <Switch>
+              <Route exact path='/' render={() => <Redirect to='/gameon' /> } />
+              <Route exact path='/gameon' render={props => <Container currentUser={this.state.currentUser} loggedIn={ loggedIn } {...props}/> }/>
+              <Route exact path='/login' render={props => <LoginForm setCurrentUser={this.setCurrentUser} loggedIn={ loggedIn }signUpUser={this.signUpUser} {...props} /> } />
+              <Route render={()=> <Redirect to='/login'/> }/>
+            </Switch>
+        </Fragment>
       </div>
     );
   }
