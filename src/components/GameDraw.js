@@ -14,7 +14,8 @@ export default class GameDraw extends Component {
     canvas.width = 700
     canvas.style.backgroundColor = "#444444"
     const context = canvas.getContext('2d')
-    this.setState({context})
+    this.setState({context});
+    [1, 2, 3, 4, 5].forEach(num => console.log(num))
   }
 
   addClick = (x, y, dragging) => {
@@ -40,33 +41,39 @@ export default class GameDraw extends Component {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height)
     context.strokeStyle = "#ffffff"
     context.lineJoin = "round"
-    context.lineWidth = 3
+    context.lineWidth = 5
 
-    for(var i=0; i < clickX.length; i++) {
-      context.beginPath();
+    for(var i = 0; i < clickX.length; i++) {
+      context.beginPath()
+
+      // console.log(this.state)
 
       if (clickDrag[i] && i) {
-        context.moveTo(clickX[i-1], clickY[i-1]);
-       } else {
-         context.moveTo(clickX[i]-1, clickY[i]);
-       }
+        context.moveTo(clickX[i-1], clickY[i-1])
+      } else {
+         context.moveTo(clickX[i]-1, clickY[i])
+      }
 
-     context.lineTo(clickX[i], clickY[i]);
-     context.closePath();
-     context.stroke();
+     context.lineTo(clickX[i], clickY[i])
+     context.closePath()
+     context.stroke()
     }
   }
 
   mouseDown = e => {
-    this.setState({paint: true})
+    // e.persist()
     this.addClick(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
-    this.redraw()
+    this.setState({paint: true}, () => {
+      this.redraw()
+    })
+
     // console.log(e.target)
   }
 
   mouseMove = e => {
+    // console.log(e)
     if(this.state.paint) {
-      this.addClick(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
+      this.addClick(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop, true)
       this.redraw()
       // console.log(e.target)
     }
@@ -85,7 +92,7 @@ export default class GameDraw extends Component {
   render() {
     return (
       <div id="canvas-wrap">
-        <canvas id="game-canvas" height="500" width="500" onClick={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseLeave={this.mouseLeave}></canvas>
+        <canvas id="game-canvas" height="500" width="500" onMouseDown={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseLeave={this.mouseLeave}></canvas>
       </div>
     )
   }
