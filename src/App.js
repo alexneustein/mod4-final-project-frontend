@@ -5,13 +5,15 @@ import NavBar from './components/NavBar'
 import Container from './components/Container'
 import LoginForm from './components/LoginForm'
 import Cables from './components/Cables'
+import Grid from '@material-ui/core/Grid'
 
 import {Route, Switch, Redirect} from 'react-router-dom'
 
 class App extends Component {
+  // username: 'peterthegeek', password: '99Kumalosians'
 
   state = {
-    currentUser: {},
+    currentUser: {id: 1, username: 'peterthegeek'},
     messages: []
     }
 

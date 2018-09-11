@@ -1,8 +1,10 @@
 import React,  { Component } from 'react'
 import { ActionCable } from 'react-actioncable-provider'
-
 import GameView from './GameView'
 import MessageInput from './MessageInput'
+import Button from '../MaterialComponents/Button'
+
+// import Snackbar from '@material-ui/core/Snackbar'
 
 export default class GameContainer extends Component {
 
@@ -11,6 +13,7 @@ export default class GameContainer extends Component {
     answer: '',
     round: 0,
     gameOn: false,
+    performer: 0,
     gamePrompts: [],
     guessField: '',
     gameObject: {}
@@ -36,7 +39,8 @@ export default class GameContainer extends Component {
       answer: resp.prompts[0].name,
       gameObject: resp,
       gameOn: true,
-      round: 1
+      round: 1,
+      performer: this.props.currentUser.id
     }
       this.sendGameOn(gameObj)
       // this.setState({gameObj})
@@ -57,17 +61,18 @@ export default class GameContainer extends Component {
     e.preventDefault()
     const guess = e.target.guess.value
     const answer = this.state.answer
-    this.gameDigest(guess, answer)
+    const performer = this.props.currentUser.id
+    this.gameDigest(guess, answer, performer)
   }
 
 
-gameDigest = (guess, answer) => {
-  console.log(this.state)
+gameDigest = (guess, answer, performer) => {
+  console.log('Game digest', this.state)
   if (this.checkRoundInner()){
-    const gameHash = {score: this.state.score + 1, round: this.state.round + 1, answer: ''}
+    const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: ''}
     this.sendScore(gameHash)
   } else if (guess.toLowerCase() === answer.toLowerCase()){
-    const gameHash = {score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name}
+    const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name}
     this.sendScore(gameHash)
     console.log('Correct!')
   } else {
@@ -91,8 +96,8 @@ gameDigest = (guess, answer) => {
 
   endGame = () => {
     const gameID = this.state.gameObject.id
-    const currentUser = this.props.currentUser
-    // console.log(`Game over! You scored ${this.state.score} points!`)
+    const score = this.state.score
+    console.log(`Game over! You scored ${this.state.score} points!`)
     this.setState({
       round: 0,
       answer: null,
@@ -105,7 +110,7 @@ gameDigest = (guess, answer) => {
       headers: {
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({winner_id: currentUser.id})
+      body: JSON.stringify({winner_id: score})
     }).then(r=>r.json()).then(console.log)
   }
 
@@ -115,14 +120,15 @@ gameDigest = (guess, answer) => {
     const gameAnswer = e.game_data.gameHash.answer
     const gameHash = e.game_data.gameHash
     const gameObject = e.game_data.gameHash.gameObject
-    console.log(e.game_data.gameHash.gameObject)
+    console.log('dataReceived before stateset', e.game_data)
     if(gameHash.round === 1){
       // console.log('Round 1???')
       this.setState({
         answer: gameAnswer,
         gameObject: gameObject,
-        gameOn: true
-      }, () => console.log(this.state))
+        gameOn: true,
+        performer: gameHash.performer
+      }, () => console.log('dataReceived after stateset', this.state))
     } else if (this.checkRoundInner()){
       this.setState(prevState => ({
         ...prevState,
@@ -148,15 +154,17 @@ gameDigest = (guess, answer) => {
           channel={{channel:'ScoreChannel'}}
           onReceived={this.dataReceived}
         />
-        <GameView />
-        <h2>{this.state.answer}</h2>
+        {/* <GameView /> */}
         {this.state.gameOn
-          ? <MessageInput inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
-          : <button onClick={this.gameOn}>Game On!</button>
+          ? <MessageInput answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
+          :  <Button onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>
         }
+        { this.state.gameOn ?
         <h3>
-          {this.state.score}
+          Score: {this.state.score}
         </h3>
+        :
+        ''}
 
       </div>
     )

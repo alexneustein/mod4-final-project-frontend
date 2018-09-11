@@ -1,5 +1,10 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom'
+import InputField from '../MaterialComponents/InputField'
+import MyButton from '../MaterialComponents/Button'
+import LoginCard from '../MaterialComponents/LoginCard'
+import Grid from '@material-ui/core/Grid'
+
 
 
 export default class LoginForm extends React.Component{
@@ -29,16 +34,29 @@ export default class LoginForm extends React.Component{
       return <Redirect to='/gameon'/>
     } else {
       return(
-          <div>
-            <form onSubmit={this.handleclick}>
-              <label>Username</label>
-              <input name='username' value={this.state.username} type='text' placeholder='Username' onChange={this.handleChange}/>
-              <label>Password</label>
-              <input name='password' value={this.state.password} type='password' placeholder='Password' onChange={this.handleChange} />
-              <button id='login' type='submit'>Log In</button>
-            </form>
-            <button id='sign up' onClick={this.onOtherClick}>Sign Up</button>
-          </div>
+        <div>
+          <LoginCard
+            inputUser={() => <InputField name='username' placeholder='username' type='text' value={this.state.username} onChange={this.handleChange}/>}
+            inputPassword={() => <InputField name='password' placeholder='password' type='password' value={this.state.password} onChange={this.handleChange}/>}
+            loginButton={()=>    <MyButton id='Login' color='primary' onClick={this.handleclick} buttonText='Log In'/>}
+            signupButton={()=>   <MyButton id='signup' color='secondary' onClick={this.onOtherClick} buttonText='Sign Up'/>}
+          />
+
+          {/* <LoginCard
+            inputUser={() => <InputField name='username' placeholder='username' type='text' value={this.state.username} onChange={this.handleChange}/>}
+            inputPassword={() => <InputField name='password' placeholder='password' type='password' value={this.state.password} onChange={this.handleChange}/>}
+            loginButton={()=>    <MyButton id='Login' color='primary' onClick={this.handleclick} buttonText='Log In'/>}
+            signupButton={()=>   <MyButton id='signup' color='secondary' onClick={this.onOtherClick} buttonText='Sign Up'/>}
+          /> */}
+{/*
+          <InputField name='username' placeholder='username' type='text' value={this.state.username} onChange={this.handleChange}/>
+          <InputField name='password' placeholder='password' type='password' value={this.state.password} onChange={this.handleChange}/>
+        </form>
+
+        <MyButton id='Login' color='primary' onClick={this.handleclick} buttonText='Log In'/>
+        <MyButton id='signup' color='secondary' onClick={this.onOtherClick} buttonText='Sign Up'/> */}
+        </div>
+
       )
     }
   }

@@ -9,7 +9,7 @@ export default class Cables extends React.Component{
     user: {},
     message: ''
   }
-  
+
   componentDidMount(){
     this.setState({user: this.props.currentUser})
   }
@@ -51,7 +51,7 @@ export default class Cables extends React.Component{
         channel={{channel: 'ChatChannel'}}
         onReceived={this.onReceived}
        />
-       <ChatInput  sendMessage={this.sendMessage} handleInput={this.handleInput} value={this.state.message}/>
+       <ChatInput sendMessage={this.sendMessage} handleInput={this.handleInput} value={this.state.message}/>
         </div>
     );
   }
