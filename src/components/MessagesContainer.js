@@ -20,8 +20,8 @@ export default class MessagesContainer extends Component {
   render() {
     return (
       <div>
+        <h1>Messages</h1>
         <div className='chat-box'>
-          <h1>Messages</h1>
         {this.state.messages.map((messageBody, i) => [
           <Message key={i} content={messageBody} currentUser={this.props.currentUser} />
         ])}

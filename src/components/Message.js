@@ -1,10 +1,9 @@
 import React,  { Component } from 'react'
+import MessageCard from '../MaterialComponents/MessageCard'
 
 const Message = (props) => {
   return (
-    <div className='chat-messages'>
-    <p>{props.content.user.username} {props.content.message}</p>
-   </div>
+    <MessageCard currentUser={props.currentUser} user={props.content.user} message={props.content.message}/>
   )
 }
 
