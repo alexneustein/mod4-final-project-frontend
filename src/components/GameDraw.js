@@ -1,4 +1,5 @@
 import React,  { Component } from 'react'
+import { ActionCable } from 'react-actioncable-provider'
 
 export default class GameDraw extends Component {
   state = {
@@ -16,6 +17,10 @@ export default class GameDraw extends Component {
     const context = canvas.getContext('2d')
     this.setState({context});
     [1, 2, 3, 4, 5].forEach(num => console.log(num))
+  }
+
+  onReceived = () => {
+
   }
 
   addClick = (x, y, dragging) => {
@@ -91,8 +96,11 @@ export default class GameDraw extends Component {
 
   render() {
     return (
-      <div id="canvas-wrap">
-        <canvas id="game-canvas" height="500" width="500" onMouseDown={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseLeave={this.mouseLeave}></canvas>
+      <div>
+        <ActionCable ref="drawCoordsChannel" channel={{channel: 'DrawCoordsChannel'}} onReceived={this.onReceived} />
+        <div id="canvas-wrap">
+          <canvas id="game-canvas" height="500" width="500" onMouseDown={this.mouseDown} onMouseMove={this.mouseMove} onMouseUp={this.mouseUp} onMouseLeave={this.mouseLeave}></canvas>
+        </div>
       </div>
     )
   }

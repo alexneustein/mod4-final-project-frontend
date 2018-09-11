@@ -63,7 +63,6 @@ export default class GameCharades extends Component {
     return (
       <div>
         <ActionCable ref="gameSignalChannel" channel={{channel: 'GameSignalChannel'}} onReceived={this.onReceived} />
-        {/* <ActionCable ref="gameChannelReceiver" channel={{channel: 'GameChannelReceiver'}} onReceived={this.onReceived} /> */}
         <div>
           <div id="video-wrapper">
             <video id="local-video" autoPlay muted></video>
