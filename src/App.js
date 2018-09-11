@@ -13,7 +13,7 @@ class App extends Component {
   // username: 'peterthegeek', password: '99Kumalosians'
 
   state = {
-    currentUser: {id: 1, username: 'peterthegeek'},
+    currentUser: {username: 'peterthegeek', password: '99Kumalosians'},
     messages: []
     }
 
@@ -60,10 +60,9 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     // const loggedIn = !!this.state.currentUser.id
     const loggedIn = true
-    console.log(loggedIn)
     return (
       <div className="App">
         <Fragment>
