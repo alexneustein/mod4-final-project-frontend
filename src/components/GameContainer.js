@@ -9,7 +9,7 @@ export default class GameContainer extends Component {
   state = {
     score: 0,
     answer: '',
-    round: 0,
+    round: 1,
     gameOn: false,
     performer: 0,
     guessField: '',
@@ -26,7 +26,6 @@ export default class GameContainer extends Component {
   gameOn = () => {
     this.setState({
       gameOn: true,
-      round: 1
     })
       // The component updates before the fetch, but we don't want to send the game object before we have the data
     fetch(`http://localhost:3000/games`, {
@@ -83,7 +82,8 @@ export default class GameContainer extends Component {
         ...prevState,
         score: gameHash.score,
         round: gameHash.round,
-        answer: gameAnswer
+        answer: gameAnswer,
+        performer: gameHash.performer
       }))
     }
   }
