@@ -15,12 +15,23 @@ export default class GameDraw extends Component {
     canvas.width = 700
     canvas.style.backgroundColor = "#444444"
     const context = canvas.getContext('2d')
-    this.setState({context});
-    [1, 2, 3, 4, 5].forEach(num => console.log(num))
+    this.setState({context})
   }
 
-  onReceived = () => {
+  componentDidUpdate() {
+    this.redraw()
+  }
 
+  onReceived = e => {
+    // console.log(e)
+    const clickX = e.data.clickX
+    const clickY = e.data.clickY
+    const clickDrag = e.data.clickDrag
+    this.setState({clickX, clickY, clickDrag})
+  }
+
+  sendCoords = coords => {
+    this.refs.drawCoordsChannel.perform('send_coords', coords)
   }
 
   addClick = (x, y, dragging) => {
@@ -34,6 +45,11 @@ export default class GameDraw extends Component {
 
     this.setState({clickX, clickY, clickDrag}, () => {
       // console.log(this.state)
+      this.sendCoords({
+        clickX: this.state.clickX,
+        clickY: this.state.clickY,
+        clickDrag: this.state.clickDrag
+      })
     })
   }
 
