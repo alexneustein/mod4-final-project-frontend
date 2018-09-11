@@ -3,9 +3,6 @@ import { ActionCable } from 'react-actioncable-provider'
 import GameView from './GameView'
 import MessageInput from './MessageInput'
 import Button from '../MaterialComponents/Button'
-// import GameSnackBar from '../MaterialComponents/GameSnackBar'
-
-// import Snackbar from '@material-ui/core/Snackbar'
 
 export default class GameContainer extends Component {
 
@@ -15,18 +12,23 @@ export default class GameContainer extends Component {
     round: 0,
     gameOn: false,
     performer: 0,
-    gamePrompts: [],
     guessField: '',
     gameObject: {},
   }
 
+  // Controlled Field For Guess
+  inputChange = (e) => {
+    const value = e.target.value
+    this.setState({guessField: value})
+  }
 
-
+  // When called, activates the game mode
   gameOn = () => {
     this.setState({
       gameOn: true,
       round: 1
     })
+      // The component updates before the fetch, but we don't want to send the game object before we have the data
     fetch(`http://localhost:3000/games`, {
       method: 'POST',
       headers: {
@@ -34,33 +36,64 @@ export default class GameContainer extends Component {
       }
     }).then(r=>r.json()).then(resp => {
       const gameObj = {
-      // gamePrompts: resp.prompts,
       answer: resp.prompts[0].name,
       gameObject: resp,
       gameOn: true,
       round: 1,
       performer: this.props.currentUser.id
     }
+        // This is the major piece of the puzzle
       this.sendGameOn(gameObj)
     }
     )
   }
-
-
+    // Sends the game data to the channel, initializing the game for the other player
   sendGameOn = (gameHash) => {
     this.refs.ScoreChannel.perform('onGameChange', {gameHash})
   }
 
-  sendScore = (gameHash) => {
-    this.refs.ScoreChannel.perform('onGameChange', {gameHash})
-    console.log(gameHash)
-    this.setState({message: ''})
+    // Upon Reception of the data, this function breaks down the channel data
+  dataReceived = (e) => {
+
+    const gameAnswer = e.game_data.gameHash.answer
+    const gameHash = e.game_data.gameHash
+    const gameObject = e.game_data.gameHash.gameObject
+
+    console.log('dataReceived before stateset', e.game_data)
+
+    if(gameHash.round === 1){
+      this.setState({
+        answer: gameAnswer,
+        gameObject: gameObject,
+        gameOn: true,
+        performer: gameHash.performer
+      })
+    }
+    // This one will be replaced with the timer function
+    else if (this.checkRoundInner()){
+      this.setState(prevState => ({
+        ...prevState,
+        score: prevState.score + 1,
+        round: prevState.round + 1
+      }))
+    }
+
+    else {
+      this.setState(prevState => ({
+        ...prevState,
+        score: gameHash.score,
+        round: gameHash.round,
+        answer: gameAnswer
+      }))
+    }
   }
 
-  inputChange = (e) => {
-    const value = e.target.value
-    this.setState({guessField: value})
+    // After setting State, it checks for the round - maybe it should check for more?
+  componentDidUpdate(){
+    this.checkRound() ? this.endGame() : ''
+
   }
+
 
   setScore = (e) => {
     e.preventDefault()
@@ -70,22 +103,27 @@ export default class GameContainer extends Component {
     this.gameDigest(guess, answer, performer)
   }
 
-
-gameDigest = (guess, answer, performer) => {
-  console.log('Game digest', this.state)
-  if (this.checkRoundInner()){
-    const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: ''}
-    this.sendScore(gameHash)
-  } else if (guess.toLowerCase() === answer.toLowerCase()){
-    const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name, gameObject: this.state.gameObject}
-    this.sendScore(gameHash)
-    // this.setState({snackMessage: 'Correct!'})
-    // this.snackBarOpen()
-  } else {
-    console.log('Sorry, try again!')
+  gameDigest = (guess, answer, performer) => {
+    console.log('Game digest', this.state)
+    if (this.checkRoundInner()){
+      const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: ''}
+      this.sendScore(gameHash)
+    } else if (guess.toLowerCase() === answer.toLowerCase()){
+      const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name, gameObject: this.state.gameObject}
+      this.sendScore(gameHash)
+      // this.setState({snackMessage: 'Correct!'})
+      // this.snackBarOpen()
+    } else {
+      console.log('Sorry, try again!')
+    }
+    this.setState({guessField: ''})
   }
-  this.setState({guessField: ''})
-}
+
+  sendScore = (gameHash) => {
+    this.refs.ScoreChannel.perform('onGameChange', {gameHash})
+    console.log(gameHash)
+    this.setState({message: ''})
+  }
 
   checkRound = () => {
     return this.state.round > 5
@@ -95,6 +133,8 @@ gameDigest = (guess, answer, performer) => {
     return this.state.round >= 5
   }
 
+
+    // Thus, the game ends
   endGame = () => {
     const gameID = this.state.gameObject.id
     const score = this.state.score
@@ -103,7 +143,6 @@ gameDigest = (guess, answer, performer) => {
       round: 0,
       answer: null,
       score: 0,
-      // gamePrompts: [],
       gameOn: false
     })
     fetch(`http://localhost:3000/games/${gameID}`, {
@@ -113,42 +152,6 @@ gameDigest = (guess, answer, performer) => {
       },
       body: JSON.stringify({winner_id: score})
     }).then(r=>r.json()).then(console.log)
-  }
-
-  dataReceived = (e) => {
-    // console.log("sent data", e.game_data.gameHash)
-    // console.log("current state", this.state)
-    const gameAnswer = e.game_data.gameHash.answer
-    const gameHash = e.game_data.gameHash
-    const gameObject = e.game_data.gameHash.gameObject
-    console.log('dataReceived before stateset', e.game_data)
-    if(gameHash.round === 1){
-      // console.log('Round 1???')
-      this.setState({
-        answer: gameAnswer,
-        gameObject: gameObject,
-        gameOn: true,
-        performer: gameHash.performer
-      })
-    } else if (this.checkRoundInner()){
-      this.setState(prevState => ({
-        ...prevState,
-        score: prevState.score + 1,
-        round: prevState.round + 1
-      }))
-    } else {
-      this.setState(prevState => ({
-        ...prevState,
-        score: prevState.score + 1,
-        round: prevState.round + 1,
-        answer: this.state.gameObject.prompts[prevState.round].name
-      }))
-    }
-  }
-
-  componentDidUpdate(){
-    this.checkRound() ? this.endGame() : ''
-
   }
 
   render() {
