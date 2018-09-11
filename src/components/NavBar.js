@@ -21,7 +21,7 @@ const NavBar = (props) => {
             ? <Typography variant="title" color='inherit' align='right'>
                 {props.currentUser.username}
               </Typography>
-            : <LoginForm setCurrentUser={props.setCurrentUser}/>}
+            : 'Log in'}
           </div>
         </Toolbar>
       </AppBar>

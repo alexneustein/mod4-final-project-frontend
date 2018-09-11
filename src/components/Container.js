@@ -1,11 +1,13 @@
 import React,  { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import GameContainer from './GameContainer'
 import MessagesContainer from './MessagesContainer'
+import AuthWrapper from '../hoc/authWrapper'
 
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-export default class Container extends Component {
+class Container extends Component {
 
 // componentDidMount(){
 //   fetch('http://localhost:3000/players').then(r=>r.json())
@@ -26,3 +28,5 @@ export default class Container extends Component {
     )
   }
 }
+
+export default AuthWrapper(Container)
