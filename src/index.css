@@ -47,3 +47,12 @@ video {
 
   video#received-video {
   }
+
+#canvas-wrap {
+}
+
+/* canvas#game-canvas {
+  background: #eee;
+  height: 500px;
+  width: 100%;
+} */

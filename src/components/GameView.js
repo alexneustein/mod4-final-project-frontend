@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+
 import GameCharadesInitiator from './GameCharadesInitiator'
 import GameCharadesReceiver from './GameCharadesReceiver'
-import { ActionCableProvider } from 'react-actioncable-provider'
+
+import GameDraw from './GameDraw'
 
 export default class GameView extends Component {
   state = {
@@ -11,9 +13,8 @@ export default class GameView extends Component {
   render() {
     return (
       <div id="game-view">
-        {document.location.hash === "#1" ? <GameCharadesReceiver username={this.state.username} /> : <GameCharadesInitiator username={this.state.username} /> }
-        {/* <button onClick={this.setUser1}>User 1</button> */}
-        {/* <button onClick={this.setUser2}>User 2</button> */}
+        {/* {document.location.hash === "#1" ? <GameCharadesReceiver username={this.state.username} /> : <GameCharadesInitiator username={this.state.username} /> } */}
+        <GameDraw />
       </div>
     )
   }
