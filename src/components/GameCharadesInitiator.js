@@ -3,7 +3,6 @@ import { ActionCable } from 'react-actioncable-provider'
 const Peer = require('simple-peer')
 
 let p1
-let streamObj
 
 export default class GameCharades extends Component {
   state = {
@@ -15,9 +14,8 @@ export default class GameCharades extends Component {
       .then(stream => {
         p1 = new Peer({ initiator: true, stream: stream, trickle: false })
         // console.log("STREAM OBJ", stream)
-        streamObj = stream
 
-        const video = document.querySelector('video#local_video')
+        const video = document.querySelector('video#local-video')
         video.srcObject = stream
         video.play()
 
@@ -36,8 +34,15 @@ export default class GameCharades extends Component {
     }
 
     if('rec_stream' in this.state.signal) {
-      this.sendMessage('send_signal', {init_stream: streamObj})
+      this.sendMessage('send_signal', {init_stream: ""})
     }
+
+    p1.on('stream', (stream) => {
+      // console.log('p1 received', stream)
+      const video = document.querySelector('video#received-video')
+      video.srcObject = stream
+      video.play()
+    })
 
     p1.on('connect', () => {
       // console.log('p1 connected')
@@ -68,8 +73,10 @@ export default class GameCharades extends Component {
         {/* <ActionCable ref="gameChannelReceiver" channel={{channel: 'GameChannelReceiver'}} /> */}
         {/* <video id="received_video" autoPlay muted></video> */}
         <div>
-          <video id="local_video" autoPlay muted></video>
-          <video id="received_video" autoPlay muted></video>
+          <div id="video-wrapper">
+            <video id="local-video" autoPlay muted></video>
+            <video id="received-video" autoPlay muted></video>
+          </div>
         </div>
       </div>
     )

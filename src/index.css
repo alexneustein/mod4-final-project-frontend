@@ -16,3 +16,34 @@ body {
   background: #eee;
   padding: 20px;
 }
+
+#video-wrapper {
+  position: relative;
+}
+
+#video-wrapper-local {
+  display: inline;
+  position: relative;
+  bottom: 0;
+}
+
+#video-wrapper-received {
+  display: inline;
+  position: relative;
+}
+
+video {
+  height: auto !important;
+}
+
+  video#local-video {
+    border: solid 2px #fff;
+    bottom: 0;
+    position: absolute;
+    margin: 20px;
+    width: 150px !important;
+    z-index: 10;
+  }
+
+  video#received-video {
+  }

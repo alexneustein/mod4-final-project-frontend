@@ -9,13 +9,21 @@ export default class GameCharades extends Component {
     signal: ""
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then(stream => {
+        p1 = new Peer({ trickle: false, stream: stream })
+
+        const video = document.querySelector('video#local-video')
+        video.srcObject = stream
+        video.play()
+      })
+  }
 
   componentDidUpdate() {
     // console.log("componentDidUpdate SIGNAL", this.state.signal)
 
     if('init_signal' in this.state.signal) {
-      p1 = new Peer({ trickle: false })
       p1.signal(this.state.signal.init_signal)
       p1.on('signal', (data) => {
         // console.log('p1 signal', data)
@@ -25,7 +33,7 @@ export default class GameCharades extends Component {
 
     p1.on('stream', (stream) => {
       // console.log('p1 received', stream)
-      const video = document.querySelector('video')
+      const video = document.querySelector('video#received-video')
       video.srcObject = stream
       video.play()
     })
@@ -56,8 +64,12 @@ export default class GameCharades extends Component {
       <div>
         <ActionCable ref="gameSignalChannel" channel={{channel: 'GameSignalChannel'}} onReceived={this.onReceived} />
         {/* <ActionCable ref="gameChannelReceiver" channel={{channel: 'GameChannelReceiver'}} onReceived={this.onReceived} /> */}
-        <video id="received_video" autoPlay muted></video>
-        {/* <video id="local_video" autoPlay muted></video> */}
+        <div>
+          <div id="video-wrapper">
+            <video id="local-video" autoPlay muted></video>
+            <video id="received-video" autoPlay muted></video>
+          </div>
+        </div>
       </div>
     )
   }
