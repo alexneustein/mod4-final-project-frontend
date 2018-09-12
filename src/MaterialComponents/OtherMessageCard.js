@@ -37,12 +37,12 @@ function MessageCard(props) {
     <Card className={classes.card}>
       <CardContent>
         {
-          props.user.username.includes('Guess') ?
-          <Typography className={classes.title} color="secondary">
+          props.user.username === props.currentUser.username ?
+          <Typography className={classes.title} color="primary">
             {props.user.username}
           </Typography>
           :
-          <Typography className={classes.title} color="primary">
+          <Typography className={classes.title} color="secondary">
             {props.user.username}
           </Typography>
         }

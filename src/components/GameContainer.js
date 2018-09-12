@@ -7,6 +7,7 @@ import MessageInput from './MessageInput'
 import MyButton from '../MaterialComponents/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Fade from '@material-ui/core/Fade'
+import TimeBar from '../MaterialComponents/TimeBar'
 
 export default class GameContainer extends Component {
 
@@ -45,7 +46,7 @@ export default class GameContainer extends Component {
   // When called, activates the game mode
   gameOn = () => {
     this.setState({
-      gameOn: true,
+      gameOn: true
     })
       // The component updates before the fetch, but we don't want to send the game object before we have the data
     fetch(`http://localhost:3000/games`, {
@@ -170,7 +171,7 @@ export default class GameContainer extends Component {
     const score = this.state.score
     this.snackbarSend(`Game over! You scored ${this.state.score} points!`)
     this.setState({
-      round: 0,
+      round: 1,
       answer: null,
       score: 0,
       gameOn: false
@@ -187,7 +188,7 @@ export default class GameContainer extends Component {
   render() {
     console.log(this.state)
     return (
-      <div>
+      <div className='game-box'>
         <ActionCable
           ref='ScoreChannel'
           channel={{channel:'ScoreChannel'}}
@@ -220,9 +221,12 @@ export default class GameContainer extends Component {
           :  <MyButton onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>
         }
         { this.state.gameOn ?
+          <div>
         <h3>
           Score: {this.state.score}
         </h3>
+        <TimeBar endGame={this.endGame}/>
+      </div>
         :
         ''}
 
