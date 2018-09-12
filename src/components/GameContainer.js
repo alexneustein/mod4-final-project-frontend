@@ -39,6 +39,7 @@ export default class GameContainer extends Component {
   inputChange = (e) => {
     const value = e.target.value
     this.setState({guessField: value})
+    // this.props.handleInput({message: value})
   }
 
   // When called, activates the game mode
@@ -127,6 +128,7 @@ export default class GameContainer extends Component {
     const answer = this.state.answer
     const performer = this.props.currentUser.id
     // this.sendMessage({user: {username: `${this.props.currentUser.username}'s Guess`}, message: guess})
+    this.props.sendMessage({user: {username: `${this.props.currentUser.username}'s guess`}, message: guess})
     this.gameDigest(guess, answer, performer)
   }
 

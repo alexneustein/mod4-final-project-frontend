@@ -7,12 +7,10 @@ import InputField from '../MaterialComponents/InputField'
 
 export default class ChatInput extends React.Component{
 
-  // const classes = this.props
-
   render () {
     return (
         <div>
-          <InputField name='Message' placeholder='Type your message here...' type='text' value={this.props.value} onChange={this.props.handleInput}/>
+          <InputField name='Message' placeholder='Type your message here...' type='text' value={this.props.messageValue} onChange={this.props.handleInput}/>
           <Button onClick={this.props.sendMessage} color='default' buttonText='Send'/>
         </div>
     )

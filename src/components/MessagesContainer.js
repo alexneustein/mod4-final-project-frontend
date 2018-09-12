@@ -1,7 +1,5 @@
 import React,  { Component } from 'react'
-
-import Cables from './Cables'
-
+import ChatInput from './ChatInput'
 import Message from './Message'
 
 export default class MessagesContainer extends Component {
@@ -17,7 +15,7 @@ export default class MessagesContainer extends Component {
           <Message key={i} content={messageBody} currentUser={this.props.currentUser} />
         ])}
       </div>
-        <Cables createMessage={this.props.createMessage} currentUser={this.props.currentUser}/>
+        <ChatInput handleInput={this.props.handleInput} messageValue={this.props.messageValue} createMessage={this.props.createMessage} sendMessage={this.props.sendMessage} currentUser={this.props.currentUser}/>
       </div>
     )
   }
