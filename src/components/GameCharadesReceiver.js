@@ -10,14 +10,7 @@ export default class GameCharades extends Component {
   }
 
   componentDidMount() {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then(stream => {
-        p1 = new Peer({ trickle: false, stream: stream })
-
-        const video = document.querySelector('video#local-video')
-        video.srcObject = stream
-        video.play()
-      })
+    this.initPeer()
   }
 
   componentDidUpdate() {
@@ -44,7 +37,10 @@ export default class GameCharades extends Component {
         this.sendMessage('send_signal', {rec_stream: ""})
       })
       p1.on('error', (error) => console.error('p1 error', error))
-      p1.on('close', () => console.log('p1 connection closed'))
+      p1.on('close', () => {
+        console.log('p1 connection closed')
+        this.initPeer()
+      })
     }
   }
 
@@ -59,6 +55,17 @@ export default class GameCharades extends Component {
 
   sendMessage = (method, forInitiator) => {
     this.refs.gameSignalChannel.perform(method, {forInitiator})
+  }
+
+  initPeer = () => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then(stream => {
+        p1 = new Peer({ trickle: false, stream: stream })
+
+        const video = document.querySelector('video#local-video')
+        video.srcObject = stream
+        video.play()
+      })
   }
 
   render() {

@@ -48,6 +48,7 @@ body {
 #video-wrapper-received {
   display: inline;
   position: relative;
+  width: 100%;
 }
 
 video {
@@ -64,4 +65,5 @@ video {
   }
 
   video#received-video {
+    width: 100%;
   }

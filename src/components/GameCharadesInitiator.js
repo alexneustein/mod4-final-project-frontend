@@ -10,20 +10,7 @@ export default class GameCharades extends Component {
   }
 
   componentDidMount() {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then(stream => {
-        p1 = new Peer({ initiator: true, stream: stream, trickle: false })
-        // console.log("STREAM OBJ", stream)
-
-        const video = document.querySelector('video#local-video')
-        video.srcObject = stream
-        video.play()
-
-        p1.on('signal', (data) => {
-          // console.log('p1 signal', data)
-          this.sendMessage('send_signal', {init_signal: data})
-        })
-      })
+    this.initPeer()
   }
 
   componentDidUpdate() {
@@ -49,8 +36,11 @@ export default class GameCharades extends Component {
         // console.log('p1 connected')
       })
       p1.on('error', (error) => console.error('p1 error', error))
-      p1.on('close', () => console.log('p1 connection closed'))
-    }    
+      p1.on('close', () => {
+        console.log('p1 connection closed')
+        this.initPeer()
+      })
+    }
   }
 
   onReceived = e => {
@@ -65,7 +55,21 @@ export default class GameCharades extends Component {
     this.refs.gameSignalChannel.perform(method, {forReceiver})
   }
 
-  testMessage = () => {
+  initPeer = () => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then(stream => {
+        p1 = new Peer({ initiator: true, stream: stream, trickle: false })
+        // console.log("STREAM OBJ", stream)
+
+        const video = document.querySelector('video#local-video')
+        video.srcObject = stream
+        video.play()
+
+        p1.on('signal', (data) => {
+          // console.log('p1 signal', data)
+          this.sendMessage('send_signal', {init_signal: data})
+        })
+      })
   }
 
   render() {
