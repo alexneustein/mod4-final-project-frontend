@@ -31,7 +31,6 @@ export default class Cables extends React.Component{
     }
 
     const postMessage = this.state.message
-    console.log(postUser)
     const message = {user: postUser(), message: postMessage}
     this.refs.ChatChannel.perform('onChat', {message})
     this.setState({message: ''})

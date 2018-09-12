@@ -3,7 +3,7 @@ import { ActionCable } from 'react-actioncable-provider'
 import GameView from './GameView'
 
 import MessageInput from './MessageInput'
-import Button from '../MaterialComponents/Button'
+import MyButton from '../MaterialComponents/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Fade from '@material-ui/core/Fade'
 import NotificationImportant from '@material-ui/icons/NotificationImportant'
@@ -113,6 +113,7 @@ export default class GameContainer extends Component {
     const guess = e.target.guess.value
     const answer = this.state.answer
     const performer = this.props.currentUser.id
+    this.props.createMessage({user: {username: `${this.props.currentUser.username}'s Guess`}, message: guess})
     this.gameDigest(guess, answer, performer)
   }
 
@@ -194,8 +195,8 @@ export default class GameContainer extends Component {
         </div>
 
         {this.state.gameOn
-          ? <MessageInput answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
-          :  <Button onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>
+          ? <MessageInput createMessage={this.props.createMessage} answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
+          :  <MyButton onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>
         }
         { this.state.gameOn ?
         <h3>

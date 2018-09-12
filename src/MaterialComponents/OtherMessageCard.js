@@ -11,19 +11,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const styles = {
   card: {
-    'text-align': 'right'
-  },
-  title: {
-    marginBottom: 16,
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-};
-
-const styles1 = {
-  card: {
     'text-align': 'left'
   },
   title: {
@@ -35,14 +22,6 @@ const styles1 = {
   },
 };
 
-const themeMe = createMuiTheme({
-  palette: {
-    primary: { main: '#33bfff'},
-    secondary: { main: '#ff9100' },
-    type: 'dark'
-  },
-});
-
 const themeYou = createMuiTheme({
   palette: {
     primary: { main: '#4caf50' },
@@ -53,25 +32,17 @@ const themeYou = createMuiTheme({
 function MessageCard(props) {
   const { classes } = props;
 
-  const meOrYou = () => {
-    if (props.user.username === props.currentUser.username){
-      return themeMe
-    } else if (props.user.username.includes(props.currentUser.username)) {
-      return themeMe
-    } else { return themeYou }
-  }
-
   return (
-    <MuiThemeProvider theme={meOrYou}>
+    <MuiThemeProvider theme={themeYou}>
     <Card className={classes.card}>
       <CardContent>
         {
-          props.user.username === props.currentUser.username ?
-          <Typography className={classes.title} color="primary">
+          props.user.username.includes('Guess') ?
+          <Typography className={classes.title} color="secondary">
             {props.user.username}
           </Typography>
           :
-          <Typography className={classes.title} color="secondary">
+          <Typography className={classes.title} color="primary">
             {props.user.username}
           </Typography>
         }
