@@ -23,7 +23,7 @@ export default class GameContainer extends Component {
   }
 
   componentDidMount() {
-    this.snackbarSend("This message is being called from componentDidMount")
+    this.snackbarSend('Press "Game On" to begin!')
   }
 
   snackbarClose = () => {
@@ -135,13 +135,14 @@ export default class GameContainer extends Component {
     if (this.checkRoundInner()){
       const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: ''}
       this.sendScore(gameHash)
+      // performer === this.props.setCurrentUser.id ? this.snackbarSend(`Your turn to guess!`) : this.snackbarSend(`Go!`)
     } else if (guess.toLowerCase() === answer.toLowerCase()){
       const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: this.state.gameObject.prompts[this.state.round].name, gameObject: this.state.gameObject}
       this.sendScore(gameHash)
       // this.setState({snackMessage: 'Correct!'})
-      // this.snackBarOpen()
+      this.snackbarSend(`Correct!`)
     } else {
-      console.log('Sorry, try again!')
+      this.snackbarSend('Sorry, try again!')
     }
     this.setState({guessField: ''})
   }
@@ -165,7 +166,7 @@ export default class GameContainer extends Component {
   endGame = () => {
     const gameID = this.state.gameObject.id
     const score = this.state.score
-    console.log(`Game over! You scored ${this.state.score} points!`)
+    this.snackbarSend(`Game over! You scored ${this.state.score} points!`)
     this.setState({
       round: 0,
       answer: null,
@@ -178,7 +179,7 @@ export default class GameContainer extends Component {
         'Content-Type':'application/json'
       },
       body: JSON.stringify({winner_id: score})
-    }).then(r=>r.json()).then(console.log)
+    }).then(r=>r.json())
   }
 
   render() {
@@ -205,7 +206,7 @@ export default class GameContainer extends Component {
             }}
             open={this.state.snackbarOpen}
             onClose={this.snackbarClose}
-            autoHideDuration={2000}
+            autoHideDuration={1500}
             message={this.state.snackbarMessage}
             id={"snackbar"}
             TransitionComponent={Fade}
