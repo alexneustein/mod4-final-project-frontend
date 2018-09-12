@@ -38,6 +38,7 @@
   position:   relative;
   width:      25vw;
   height:     55vh;
+  align-items: center;
  /* flex-direction: column-reverse; */
 }
 

@@ -9,6 +9,17 @@ import Grid from '@material-ui/core/Grid';
 
 class Container extends Component {
 
+  state = {
+    messages: []
+  }
+
+  createMessage = (message) => {
+    console.log(message)
+    this.setState(prevState => ({
+      messages: [...prevState.messages, message]
+    }))
+  }
+
 // componentDidMount(){
 //   fetch('http://localhost:3000/players').then(r=>r.json())
 // }
@@ -18,10 +29,10 @@ class Container extends Component {
       <div>
         <Grid container spacing={24}>
           <Grid item xs>
-            <Paper><GameContainer currentUser={this.props.currentUser}/></Paper>
+            <Paper><GameContainer createMessage={this.createMessage} currentUser={this.props.currentUser}/></Paper>
           </Grid>
           <Grid item xs={4}>
-            <Paper><MessagesContainer currentUser={this.props.currentUser}/></Paper>
+            <Paper><MessagesContainer createMessage={this.createMessage} messages={this.state.messages} currentUser={this.props.currentUser}/></Paper>
           </Grid>
         </Grid>
       </div>
