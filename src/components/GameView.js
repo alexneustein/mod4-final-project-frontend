@@ -18,8 +18,8 @@ export default class GameView extends Component {
   render() {
     return (
       <div id="game-view">
-        {/* {document.location.hash === "#1" ? <GameCharadesReceiver username={this.state.username} /> : <GameCharadesInitiator username={this.state.username} /> } */}
-        <GameDraw />
+        {document.location.hash === "#1" ? <GameCharadesReceiver username={this.state.username} /> : <GameCharadesInitiator username={this.state.username} /> }
+        {/* <GameDraw /> */}
       </div>
     )
   }

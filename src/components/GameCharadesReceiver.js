@@ -6,7 +6,7 @@ let p1
 
 export default class GameCharades extends Component {
   state = {
-    signal: ""
+    signal: {}
   }
 
   componentDidMount() {
@@ -31,19 +31,21 @@ export default class GameCharades extends Component {
       })
     }
 
-    p1.on('stream', (stream) => {
-      // console.log('p1 received', stream)
-      const video = document.querySelector('video#received-video')
-      video.srcObject = stream
-      video.play()
-    })
+    if(p1) {
+      p1.on('stream', (stream) => {
+        // console.log('p1 received', stream)
+        const video = document.querySelector('video#received-video')
+        video.srcObject = stream
+        video.play()
+      })
 
-    p1.on('connect', () => {
-      // console.log('p1 connected')
-      this.sendMessage('send_signal', {rec_stream: ""})
-    })
-    p1.on('error', (error) => console.error('p1 error', error))
-    p1.on('close', () => console.log('p1 connection closed'))
+      p1.on('connect', () => {
+        // console.log('p1 connected')
+        this.sendMessage('send_signal', {rec_stream: ""})
+      })
+      p1.on('error', (error) => console.error('p1 error', error))
+      p1.on('close', () => console.log('p1 connection closed'))
+    }
   }
 
 
