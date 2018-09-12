@@ -1,4 +1,4 @@
-import React,  { Component } from 'react'
+import React from 'react'
 import Button from '../MaterialComponents/Button'
 
 import TextField from '@material-ui/core/TextField';

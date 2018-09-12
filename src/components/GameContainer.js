@@ -8,6 +8,7 @@ import MyButton from '../MaterialComponents/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Fade from '@material-ui/core/Fade'
 import TimeBar from '../MaterialComponents/TimeBar'
+import TopicSelect from '../MaterialComponents/TopicSelect'
 
 export default class GameContainer extends Component {
 
@@ -20,12 +21,24 @@ export default class GameContainer extends Component {
     guessField: '',
     gameObject: {},
     snackbarOpen: false,
-    snackbarMessage: ""
+    snackbarMessage: "",
+    topicId: 0,
+    topicSelectOpen: false
   }
 
   componentDidMount() {
     this.snackbarSend('Press "Game On" to begin!')
   }
+
+  topicClickOpen = () => {
+    this.setState({ topicSelectOpen: true });
+  };
+
+  topicClickClosed = (topic) => {
+    // console.log(topic)
+    this.setState({ topicSelectOpen: false, topicId: topic });
+    this.gameOn(topic)
+  };
 
   snackbarClose = () => {
     this.setState({snackbarOpen: false})
@@ -44,21 +57,24 @@ export default class GameContainer extends Component {
   }
 
   // When called, activates the game mode
-  gameOn = () => {
+  gameOn = (topicId) => {
     this.setState({
-      gameOn: true
+      gameOn: true,
+      topicId: topicId
     })
       // The component updates before the fetch, but we don't want to send the game object before we have the data
     fetch(`http://localhost:3000/games`, {
       method: 'POST',
       headers: {
         'Content-Type':'application/json'
-      }
+      },
+      body: JSON.stringify({game: {topic_id: topicId}})
     }).then(r=>r.json()).then(resp => {
       const gameObj = {
       answer: resp.prompts[0].name,
       gameObject: resp,
       gameOn: true,
+      topicId: this.state.topicId,
       round: 1,
       performer: this.props.currentUser.id
     }
@@ -79,7 +95,7 @@ export default class GameContainer extends Component {
     const gameHash = e.game_data.gameHash
     const gameObject = e.game_data.gameHash.gameObject
 
-    console.log('dataReceived before stateset', e.game_data)
+    // console.log('dataReceived before stateset', e.game_data)
 
     if(gameHash.round === 1){
       this.setState({
@@ -112,16 +128,7 @@ export default class GameContainer extends Component {
     // After setting State, it checks for the round - maybe it should check for more?
   componentDidUpdate(){
     this.checkRound() ? this.endGame() : ''
-
   }
-
-  // sendMessage = (content) => {
-  //   this.refs.ChatChannel.perform('onChat', {content})
-  // }
-  //
-  // messageHandle = (content) => {
-  //   this.props.createMessage(content)
-  // }
 
   setScore = (e) => {
     e.preventDefault()
@@ -134,7 +141,7 @@ export default class GameContainer extends Component {
   }
 
   gameDigest = (guess, answer, performer) => {
-    console.log('Game digest', this.state)
+    // console.log('Game digest', this.state)
     if (this.checkRoundInner()){
       const gameHash = {performer: performer, score: this.state.score + 1, round: this.state.round + 1, answer: ''}
       this.sendScore(gameHash)
@@ -152,16 +159,16 @@ export default class GameContainer extends Component {
 
   sendScore = (gameHash) => {
     this.refs.ScoreChannel.perform('onGameChange', {gameHash})
-    console.log(gameHash)
+    // console.log(gameHash)
     this.setState({message: ''})
   }
 
   checkRound = () => {
-    return this.state.round > 5
+    return this.state.round > 10
   }
 
   checkRoundInner = () => {
-    return this.state.round >= 5
+    return this.state.round >= 10
   }
 
 
@@ -186,7 +193,7 @@ export default class GameContainer extends Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <div className='game-box'>
         <ActionCable
@@ -218,7 +225,7 @@ export default class GameContainer extends Component {
 
         {this.state.gameOn
           ? <MessageInput createMessage={this.props.createMessage} answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
-          :  <MyButton onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>
+          :  <MyButton onClick={this.topicClickOpen} color='secondary' buttonText='GAME ON'/>
         }
         { this.state.gameOn ?
           <div>
@@ -229,7 +236,7 @@ export default class GameContainer extends Component {
       </div>
         :
         ''}
-
+        <TopicSelect topics={this.props.topics}open={this.state.topicSelectOpen} topicClickClosed={this.topicClickClosed}/>
       </div>
     )
   }

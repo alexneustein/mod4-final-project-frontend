@@ -6,7 +6,7 @@ export default class MessagesContainer extends Component {
 
 
   render() {
-    console.log(this.props.messages)
+    // console.log(this.props.messages)
     return (
       <div>
         <div className="App-title">Messages</div>

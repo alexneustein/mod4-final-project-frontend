@@ -1,9 +1,9 @@
-import React,  { Component } from 'react'
+import React from 'react'
 import MessageCard from '../MaterialComponents/MessageCard'
 import OtherMessageCard from '../MaterialComponents/OtherMessageCard'
 
 const Message = (props) => {
-  console.log('message function', props)
+  // console.log('message function', props)
   if(props.content.message.userobject){
       return (
         <div>

@@ -18,7 +18,7 @@ class LinearDeterminate extends React.Component {
   };
 
   componentDidMount() {
-    this.timer = setInterval(this.progress, 200);
+    this.timer = setInterval(this.progress, 120);
   }
 
   componentWillUnmount() {
@@ -34,7 +34,7 @@ class LinearDeterminate extends React.Component {
       this.props.endGame()
       this.setState({ completed: 0 });
     } else {
-      this.setState({ completed: completed + 1 });
+      this.setState({ completed: completed + 0.1 });
     }
   };
 
