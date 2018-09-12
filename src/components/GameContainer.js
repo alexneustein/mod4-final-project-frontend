@@ -7,7 +7,6 @@ import MessageInput from './MessageInput'
 import MyButton from '../MaterialComponents/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Fade from '@material-ui/core/Fade'
-import NotificationImportant from '@material-ui/icons/NotificationImportant'
 
 export default class GameContainer extends Component {
 
@@ -19,15 +18,21 @@ export default class GameContainer extends Component {
     performer: 0,
     guessField: '',
     gameObject: {},
-    snackbarOpen: false
+    snackbarOpen: false,
+    snackbarMessage: ""
   }
 
   componentDidMount() {
-    this.setState({snackbarOpen: true})
+    this.snackbarSend("This message is being called from componentDidMount")
   }
 
   snackbarClose = () => {
     this.setState({snackbarOpen: false})
+  }
+
+  snackbarSend = snackbarMessage => {
+    // this.setState({snackbarMessage, snackBarOpen: true})
+    this.setState({snackbarOpen: true, snackbarMessage})
   }
 
   // Controlled Field For Guess
@@ -201,7 +206,7 @@ export default class GameContainer extends Component {
             open={this.state.snackbarOpen}
             onClose={this.snackbarClose}
             autoHideDuration={2000}
-            message={"Message"}
+            message={this.state.snackbarMessage}
             id={"snackbar"}
             TransitionComponent={Fade}
           />
