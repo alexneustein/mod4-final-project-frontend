@@ -13,9 +13,10 @@ class App extends Component {
   // username: 'peterthegeek', id: 1
 
   state = {
-    currentUser: {username: 'peterthegeek', id: 1},
+    // currentUser: {username: 'peterthegeek', id: 1},
+    currentUser: {username: 'dan', id: 2},
     messages: []
-    }
+  }
 
   setCurrentUser = (newUser) => {
     const bodyObj = {...newUser}
