@@ -4,6 +4,24 @@ body {
   font-family: sans-serif;
 }
 
+#snackbar-wrap {
+  min-height: 60px;
+  position: relative;
+}
+
+#snackbar {
+  position: absolute;
+}
+
+.snackbar-message {
+  display: 'flex';
+  vertical-align: 'center';
+}
+
+.snackbar-icon {
+  size: 20;
+}
+
 #game-view {
   background: #222;
   color: #fff;
@@ -47,12 +65,3 @@ video {
 
   video#received-video {
   }
-
-#canvas-wrap {
-}
-
-/* canvas#game-canvas {
-  background: #eee;
-  height: 500px;
-  width: 100%;
-} */

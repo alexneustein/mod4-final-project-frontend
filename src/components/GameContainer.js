@@ -1,8 +1,12 @@
 import React,  { Component } from 'react'
 import { ActionCable } from 'react-actioncable-provider'
 import GameView from './GameView'
+
 import MessageInput from './MessageInput'
 import Button from '../MaterialComponents/Button'
+import Snackbar from '@material-ui/core/Snackbar'
+import Fade from '@material-ui/core/Fade'
+import NotificationImportant from '@material-ui/icons/NotificationImportant'
 
 export default class GameContainer extends Component {
 
@@ -14,6 +18,15 @@ export default class GameContainer extends Component {
     performer: 0,
     guessField: '',
     gameObject: {},
+    snackbarOpen: false
+  }
+
+  componentDidMount() {
+    this.setState({snackbarOpen: true})
+  }
+
+  snackbarClose = () => {
+    this.setState({snackbarOpen: false})
   }
 
   // Controlled Field For Guess
@@ -164,7 +177,22 @@ export default class GameContainer extends Component {
           onReceived={this.dataReceived}
         />
         <GameView />
-        {/* <GameSnackBar open={this.state.snackOpen} message={this.state.snackMessage}/> */}
+
+        <div id="snackbar-wrap">
+          <Snackbar
+            anchorOrigin={{
+              horizontal: 'center',
+              vertical: 'top'
+            }}
+            open={this.state.snackbarOpen}
+            onClose={this.snackbarClose}
+            autoHideDuration={2000}
+            message={"Message"}
+            id={"snackbar"}
+            TransitionComponent={Fade}
+          />
+        </div>
+
         {this.state.gameOn
           ? <MessageInput answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
           :  <Button onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>
