@@ -6,18 +6,9 @@ import Message from './Message'
 
 export default class MessagesContainer extends Component {
 
-  // state = {
-  //   messages: []
-  // }
-  //
-  // createMessage = (message) => {
-  //   console.log(message)
-  //   this.setState(prevState => ({
-  //     messages: [...prevState.messages, message]
-  //   }))
-  // }
 
   render() {
+    console.log(this.props.messages)
     return (
       <div>
         <h1>Messages</h1>

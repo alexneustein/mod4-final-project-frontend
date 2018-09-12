@@ -1,5 +1,6 @@
 import React,  { Component } from 'react'
 import { ActionCable } from 'react-actioncable-provider'
+
 import GameView from './GameView'
 
 import MessageInput from './MessageInput'
@@ -107,13 +108,20 @@ export default class GameContainer extends Component {
 
   }
 
+  // sendMessage = (content) => {
+  //   this.refs.ChatChannel.perform('onChat', {content})
+  // }
+  //
+  // messageHandle = (content) => {
+  //   this.props.createMessage(content)
+  // }
 
   setScore = (e) => {
     e.preventDefault()
     const guess = e.target.guess.value
     const answer = this.state.answer
     const performer = this.props.currentUser.id
-    this.props.createMessage({user: {username: `${this.props.currentUser.username}'s Guess`}, message: guess})
+    // this.sendMessage({user: {username: `${this.props.currentUser.username}'s Guess`}, message: guess})
     this.gameDigest(guess, answer, performer)
   }
 
@@ -177,6 +185,11 @@ export default class GameContainer extends Component {
           channel={{channel:'ScoreChannel'}}
           onReceived={this.dataReceived}
         />
+        {/* <ActionCable
+          ref='ChatChannel'
+          channel={{channel: 'ChatChannel'}}
+          onReceived={this.messageHandle}
+         /> */}
         <GameView />
 
         <div id="snackbar-wrap">
