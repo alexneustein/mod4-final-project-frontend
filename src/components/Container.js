@@ -1,5 +1,4 @@
 import React,  { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import { ActionCable } from 'react-actioncable-provider'
 
 import GameContainer from './GameContainer'
@@ -14,16 +13,27 @@ class Container extends Component {
   state = {
     user: {},
     message: '',
-    messages: []
+    messages: [],
+    topics: []
   }
 
 
   componentDidMount(){
+    fetch('http://localhost:3000/topics')
+      .then(r=>r.json())
+      .then(resp => {
+        this.setState({
+          topics: resp
+        })
+      }
+      )
     this.setState({user: this.props.currentUser})
+
+
   }
 
   onReceived = (e) => {
-    console.log('onReceived', e)
+    // console.log('onReceived', e)
     if(e.message.message){
       this.createMessage(e.message.message)
     } else {
@@ -32,7 +42,7 @@ class Container extends Component {
   }
 
   createMessage = (message) => {
-    console.log('createMessage', message)
+    // console.log('createMessage', message)
     this.setState(prevState => ({
       messages: [...prevState.messages, message]
     }))
@@ -64,7 +74,7 @@ class Container extends Component {
       this.setState(event)
     } else {
     const value = event.target.value
-    console.log('handleInput', value)
+    // console.log('handleInput', value)
     this.setState({message: value})
   }
   }
@@ -79,7 +89,7 @@ class Container extends Component {
          />
         <Grid container spacing={24}>
           <Grid item xs>
-            <Paper><GameContainer createMessage={this.createMessage} currentUser={this.props.currentUser} createMessage={this.props.createMessage} sendMessage={this.sendMessage} handleInput={this.handleInput}/></Paper>
+            <Paper><GameContainer topics={this.state.topics} createMessage={this.createMessage} currentUser={this.props.currentUser} sendMessage={this.sendMessage} handleInput={this.handleInput}/></Paper>
           </Grid>
           <Grid item xs={4}>
             <Paper><MessagesContainer onReceived={this.onReceived} messageValue={this.state.message} sendMessage={this.sendMessage} handleInput={this.handleInput} createMessage={this.createMessage} messages={this.state.messages} currentUser={this.props.currentUser}/></Paper>

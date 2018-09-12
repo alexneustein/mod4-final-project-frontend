@@ -43,6 +43,7 @@ export default class GameCharades extends Component {
       p1.on('error', (error) => console.error('p1 error', error))
       p1.on('close', () => {
         console.log('p1 connection closed')
+        p1.removeListener('signal', () => {})
         // this.initPeer()
       })
     }
@@ -55,10 +56,24 @@ export default class GameCharades extends Component {
         console.log("forReceiver", this.state.signal)
       })
     }
+    if(e.data.reconnect) {
+      // p1.destroy()
+      this.initPeer()
+      console.log("RECONNECTING")
+    }
   }
 
   sendSignal = (method, forInitiator) => {
     this.refs.gameSignalChannel.perform(method, {forInitiator})
+  }
+
+  reconnectSignal = (method, reconnect) => {
+    this.refs.gameSignalChannel.perform(method, {reconnect})
+  }
+
+  reconnect = () => {
+    this.reconnectSignal('send_signal', {reconnect: true})
+    console.log("test")
   }
 
   initPeer = () => {
@@ -79,6 +94,7 @@ export default class GameCharades extends Component {
         <div id="video-wrapper">
           <video id="local-video" autoPlay muted></video>
           <video id="received-video" autoPlay muted></video>
+          <button onClick={this.reconnect}>Reconnect</button>
         </div>
       </div>
     )

@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { ActionCableProvider } from 'react-actioncable-provider'
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import ActionCable from 'actioncable'
+// import ActionCable from 'actioncable'
 
 ReactDOM.render(
 

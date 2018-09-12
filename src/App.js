@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import NavBar from './components/NavBar'
 import Container from './components/Container'
 import LoginForm from './components/LoginForm'
-import Cables from './components/Cables'
-import Grid from '@material-ui/core/Grid'
+// import Cables from './components/Cables'
+// import Grid from '@material-ui/core/Grid'
 
 import {Route, Switch, Redirect} from 'react-router-dom'
 
@@ -15,7 +15,10 @@ class App extends Component {
   state = {
     currentUser: {username: 'peterthegeek', id: 1},
     // currentUser: {username: 'dan', id: 2},
-    messages: []
+    // messages: []
+  }
+
+  componentDidMount(){
   }
 
   setCurrentUser = (newUser) => {

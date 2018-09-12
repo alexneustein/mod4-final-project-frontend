@@ -15,11 +15,28 @@
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 4.7vh;
 }
 
 .App-intro {
   font-size: large;
+}
+
+.game-box{
+  height: 55vh;
+  align-items: center;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+}
+
+.chat-box{
+  overflow:   scroll;
+  /* position:   relative; */
+  /* width:      25vw; */
+  height:     55vh;
+  /* align-items: right; */
+  padding: 2vh;
+ /* flex-direction: column-reverse; */
 }
 
 .chat-messages{
@@ -31,15 +48,6 @@
   text-align: justify;
   bottom:     0;
   max-height: 55vh;
-}
-
-.chat-box{
-  overflow:   scroll;
-  position:   relative;
-  width:      25vw;
-  height:     55vh;
-  align-items: center;
- /* flex-direction: column-reverse; */
 }
 
 @keyframes App-logo-spin {

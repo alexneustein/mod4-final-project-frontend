@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
+// import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -12,19 +12,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 const styles = {
   card: {
     'text-align': 'right'
-  },
-  title: {
-    marginBottom: 16,
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-};
-
-const styles1 = {
-  card: {
-    'text-align': 'left'
   },
   title: {
     marginBottom: 16,
@@ -43,26 +30,11 @@ const themeMe = createMuiTheme({
   },
 });
 
-const themeYou = createMuiTheme({
-  palette: {
-    primary: { main: '#4caf50' },
-    secondary: { main: '#ff9100' },
-  },
-});
-
 function MessageCard(props) {
   const { classes } = props;
 
-  const meOrYou = () => {
-    if (props.user.username === props.currentUser.username){
-      return themeMe
-    } else if (props.user.username.includes(props.currentUser.username)) {
-      return themeMe
-    } else { return themeYou }
-  }
-
   return (
-    <MuiThemeProvider theme={meOrYou}>
+    <MuiThemeProvider theme={themeMe}>
     <Card className={classes.card}>
       <CardContent>
         {

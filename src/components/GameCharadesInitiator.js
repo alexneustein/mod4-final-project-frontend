@@ -46,7 +46,7 @@ export default class GameCharades extends Component {
       p1.on('error', (error) => console.error('p1 error', error))
       p1.on('close', () => {
         console.log('p1 connection closed')
-        // p1.removeListener('signal')
+        p1.removeListener('signal', () => {})
         // console.log("CLOSE", p1)
         // this.initPeer()
       })
@@ -59,10 +59,11 @@ export default class GameCharades extends Component {
         console.log("forInitiator", this.state.signal)
       })
     }
-    // if(e.data.reconnect) {
-    //   p1.destroy()
-    //   this.initPeer()
-    // }
+    if(e.data.reconnect) {
+      // p1.destroy()
+      this.initPeer()
+      console.log("RECONNECTING")
+    }
   }
 
   sendSignal = (method, forReceiver) => {
