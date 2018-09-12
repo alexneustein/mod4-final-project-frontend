@@ -215,17 +215,18 @@ export default class GameContainer extends Component {
           />
         </div>
 
-        {this.state.gameOn
-          ? <MessageInput createMessage={this.props.createMessage} answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
-          :  <MyButton onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>
-        }
-        { this.state.gameOn ?
-        <h3>
-          Score: {this.state.score}
-        </h3>
-        :
-        ''}
-
+        <div>
+          {this.state.gameOn
+            ? <MessageInput createMessage={this.props.createMessage} answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
+            :  <MyButton onClick={this.gameOn} color='secondary' buttonText='GAME ON'/>
+          }
+          { this.state.gameOn ?
+          <h3>
+            Score: {this.state.score}
+          </h3>
+          :
+          ''}
+        </div>
       </div>
     )
   }
