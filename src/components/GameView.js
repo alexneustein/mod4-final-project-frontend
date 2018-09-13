@@ -15,11 +15,29 @@ export default class GameView extends Component {
 
   }
 
+  componentDidUpdate(){
+
+  }
+
+  viewSwitch = () => {
+    switch (this.props.gameMode){
+      case 1:
+      return <GameDraw />
+      break
+      case 2:
+      return document.location.hash === "#1" ? <GameCharadesReceiver username={this.state.username} /> : <GameCharadesInitiator username={this.state.username} />
+      break
+      case 3:
+      return  document.location.hash === "#1" ? <GameAudiooReceiver username={this.state.username} /> : <GameAudiooInitiator username={this.state.username} /> 
+      break
+    }
+  }
+
+
   render() {
     return (
       <div id="game-view">
-        {document.location.hash === "#1" ? <GameCharadesReceiver username={this.state.username} /> : <GameCharadesInitiator username={this.state.username} /> }
-        {/* <GameDraw /> */}
+        {this.viewSwitch()}
       </div>
     )
   }

@@ -23,11 +23,13 @@ export default class GameContainer extends Component {
     snackbarOpen: false,
     snackbarMessage: "",
     topicId: 0,
-    topicSelectOpen: false
+    topicSelectOpen: false,
+    gameSwitch: [0]
   }
 
   componentDidMount() {
     this.snackbarSend('Press "Game On" to begin!')
+    // console.log(this.setGameArray())
   }
 
   topicClickOpen = () => {
@@ -76,13 +78,25 @@ export default class GameContainer extends Component {
       gameOn: true,
       topicId: this.state.topicId,
       round: 1,
-      performer: this.props.currentUser.id
+      performer: this.props.currentUser.id,
+      gameSwitch: this.setGameArray()
     }
+    console.log(gameObj)
         // This is the major piece of the puzzle
       this.sendGameOn(gameObj)
     }
     )
   }
+
+  setGameArray = (num = 10) => {
+    const gameArr = []
+    for (let i=0; i < num; i++){
+      const randnum = Math.floor(Math.random()*3) + 1
+      gameArr.push(randnum)
+    }
+    return gameArr
+  }
+
     // Sends the game data to the channel, initializing the game for the other player
   sendGameOn = (gameHash) => {
     this.refs.ScoreChannel.perform('onGameChange', {gameHash})
@@ -102,7 +116,8 @@ export default class GameContainer extends Component {
         answer: gameAnswer,
         gameObject: gameObject,
         gameOn: true,
-        performer: gameHash.performer
+        performer: gameHash.performer,
+        gameSwitch: gameHash.gameSwitch
       })
     }
     // This one will be replaced with the timer function
@@ -110,7 +125,7 @@ export default class GameContainer extends Component {
       this.setState(prevState => ({
         ...prevState,
         score: prevState.score + 1,
-        round: prevState.round + 1
+        round: prevState.round + 1,
       }))
     }
 
@@ -181,7 +196,8 @@ export default class GameContainer extends Component {
       round: 1,
       answer: null,
       score: 0,
-      gameOn: false
+      gameOn: false,
+      gameSwitch: [0]
     })
     fetch(`http://localhost:3000/games/${gameID}`, {
       method: 'PATCH',
@@ -206,7 +222,7 @@ export default class GameContainer extends Component {
           channel={{channel: 'ChatChannel'}}
           onReceived={this.messageHandle}
          /> */}
-        <GameView />
+        <GameView gameMode={this.state.gameSwitch[this.state.round - 1]}/>
 
         <div id="snackbar-wrap">
           <Snackbar
@@ -222,7 +238,7 @@ export default class GameContainer extends Component {
             TransitionComponent={Fade}
           />
         </div>
-        
+
         <div>
           {this.state.gameOn
             ? <MessageInput createMessage={this.props.createMessage} answer={this.state.answer} currentUser={this.props.currentUser} performer={this.state.performer} inputChange={this.inputChange} controlField={this.state.guessField} score={this.state.score} setScore={this.setScore}/>
