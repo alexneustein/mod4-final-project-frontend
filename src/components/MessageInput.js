@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 const MessageInput = (props) => {
   return (
     <div id="message-input">
-        <h2>{props.answer}</h2>
+        {/* <h2>{props.answer}</h2>
       <form onSubmit={props.setScore}>
       <TextField
           id="full-width"
@@ -21,8 +21,8 @@ const MessageInput = (props) => {
           margin="normal"
         />
         <Button type='submit' color='primary' buttonText='Guess'/>
-      </form>
-      {/* {
+      </form> */}
+      {
         props.currentUser.id === props.performer?
         <h2>{props.answer}</h2>
       :
@@ -42,7 +42,7 @@ const MessageInput = (props) => {
         <Button type='submit' color='primary' buttonText='Guess'/>
       </form>
 
-    } */}
+    }
 
     </div>
   )
