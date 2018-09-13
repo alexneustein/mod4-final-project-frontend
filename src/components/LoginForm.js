@@ -19,6 +19,12 @@ export default class LoginForm extends React.Component{
     this.setState({[e.target.name]: inputValue})
   }
 
+  handleEnter = (e) => {
+    if(e.key === 'Enter'){
+      this.handleclick(e)
+    }
+  }
+
   handleclick = (e) => {
     e.preventDefault()
     this.props.setCurrentUser({player: {...this.state}})
@@ -36,8 +42,8 @@ export default class LoginForm extends React.Component{
       return(
         <div>
           <LoginCard
-            inputUser={() => <InputField name='username' placeholder='username' type='text' value={this.state.username} onChange={this.handleChange}/>}
-            inputPassword={() => <InputField name='password' placeholder='password' type='password' value={this.state.password} onChange={this.handleChange}/>}
+            inputUser={() => <InputField name='username' handleEnter={this.handleEnter} placeholder='username' type='text' value={this.state.username} onChange={this.handleChange}/>}
+            inputPassword={() => <InputField name='password' handleEnter={this.handleEnter} placeholder='password' type='password' value={this.state.password} onChange={this.handleChange}/>}
             loginButton={()=>    <MyButton id='Login' color='primary' onClick={this.handleclick} buttonText='Log In'/>}
             signupButton={()=>   <MyButton id='signup' color='secondary' onClick={this.onOtherClick} buttonText='Sign Up'/>}
           />

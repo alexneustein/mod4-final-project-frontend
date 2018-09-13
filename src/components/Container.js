@@ -70,6 +70,12 @@ class Container extends Component {
   }
 
   handleInput = (event) => {
+
+  console.log(event)
+    if(event.keyCode == 13){
+      this.sendMessage()
+    }
+
     if(event.message){
       this.setState(event)
     } else {

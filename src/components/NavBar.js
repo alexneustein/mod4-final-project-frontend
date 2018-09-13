@@ -9,7 +9,7 @@ import TopNavBar from '../MaterialComponents/TopNavBar'
 const NavBar = (props) => {
   // console.log(props.currentUser)
   return (
-    <TopNavBar currentUser={props.currentUser}/>
+    <TopNavBar currentUser={props.currentUser} logOut={props.logOut} loggedIn={props.loggedIn}/>
   )
 }
 

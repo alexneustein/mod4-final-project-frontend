@@ -21,6 +21,7 @@ function Inputs(props) {
         inputProps={{
           'aria-label': 'Description',
         }}
+        onKeyDown={props.handleEnter}
         name={props.name}
         placeholder={props.placeholder}
         type={props.type}

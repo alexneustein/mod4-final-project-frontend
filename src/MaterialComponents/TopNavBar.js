@@ -1,4 +1,5 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -36,8 +37,8 @@ function TopNavBar(props) {
             Pic-Char-Boo
           </Typography>
           {props.loggedIn ?
-            <Button color="inherit">Log Out</Button>
-          : <Button color="inherit">Login</Button>
+            <Button color="inherit" onClick={() => props.logOut()}>Log Out</Button>
+          : <p>Game on!</p>
           }
         </Toolbar>
       </AppBar>

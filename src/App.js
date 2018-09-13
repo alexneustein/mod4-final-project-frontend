@@ -13,12 +13,17 @@ class App extends Component {
   // username: 'peterthegeek', id: 1
 
   state = {
-    currentUser: {username: 'peterthegeek', id: 1},
+    currentUser: {}
+    // currentUser: {username: 'peterthegeek', id: 1},
     // currentUser: {username: 'dan', id: 2},
     // messages: []
   }
 
   componentDidMount(){
+  }
+
+  logOut = () => {
+    this.setState({currentUser: {}})
   }
 
   setCurrentUser = (newUser) => {
@@ -65,16 +70,16 @@ class App extends Component {
 
   render() {
     // console.log(this.state)
-    // const loggedIn = !!this.state.currentUser.id
-    const loggedIn = true
+    const loggedIn = !!this.state.currentUser.id
+    // const loggedIn = true
     return (
       <div className="App">
         <Fragment>
-          <NavBar currentUser={this.state.currentUser} loggedIn={ loggedIn } setCurrentUser={this.setCurrentUser}/>
+          <NavBar currentUser={this.state.currentUser} loggedIn={ loggedIn } logOut={this.logOut} setCurrentUser={this.setCurrentUser}/>
             <Switch>
               <Route exact path='/' render={() => <Redirect to='/gameon' /> } />
               <Route exact path='/gameon' render={props => <Container currentUser={this.state.currentUser} loggedIn={ loggedIn } {...props}/> }/>
-              <Route exact path='/login' render={props => <LoginForm setCurrentUser={this.setCurrentUser} loggedIn={ loggedIn }signUpUser={this.signUpUser} {...props} /> } />
+              <Route exact path='/login' render={props => <LoginForm setCurrentUser={this.setCurrentUser} loggedIn={ loggedIn } signUpUser={this.signUpUser} {...props} /> } />
               <Route render={()=> <Redirect to='/login'/> }/>
             </Switch>
         </Fragment>

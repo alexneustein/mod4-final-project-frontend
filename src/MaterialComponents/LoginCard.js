@@ -12,14 +12,11 @@ import CardContent from '@material-ui/core/CardContent';
 
 const styles = {
   card: {
-    align: 'center',
-    minWidth: 275,
-    maxWidth: 750
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    'text-align': 'center'
+    // 'align-items': 'center'
+    // align: 'center',
+    // minWidth: 275,
+    // maxWidth: 750
   },
   title: {
     marginBottom: 16,
@@ -39,7 +36,7 @@ function LoginCard(props) {
         {props.inputUser()}
         {props.inputPassword()}
       </CardContent>
-      <CardActions>
+      <CardActions >
         {props.loginButton()}
         {props.signupButton()}
       </CardActions>

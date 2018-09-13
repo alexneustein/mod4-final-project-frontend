@@ -8,7 +8,8 @@ import GameDraw from './GameDraw'
 
 export default class GameView extends Component {
   state = {
-    username: "Tester"
+    username: "Tester",
+    // snackBarOpen: false
   }
 
   componentDidMount() {
@@ -18,17 +19,44 @@ export default class GameView extends Component {
   componentDidUpdate(){
 
   }
+  //
+  // snackbarClose = () => {
+  //   this.setState({snackbarOpen: false})
+  // }
+  //
+  // snackbarSend = snackbarMessage => {
+  //   // this.setState({snackbarMessage, snackBarOpen: true})
+  //   this.setState({snackbarOpen: true, snackbarMessage})
+  // }
+
+  modeSnack = (gameMode) => {
+    console.log(gameMode)
+    if(gameMode === 1){
+      return 'DRAW!!!'
+    } else if (gameMode ===  2){
+      return 'MIME!!!'
+    } else if (gameMode === 3){
+      return 'TALK!!!'
+    }
+  }
+
+
+
 
   viewSwitch = () => {
-    switch (this.props.gameMode){
+    const mode = this.props.gameMode
+    switch (mode){
       case 1:
+      // this.modeSnack(1)
       return <GameDraw />
       break
       case 2:
+      // this.modeSnack(2)
       return document.location.hash === "#1" ? <GameCharadesReceiver username={this.state.username} /> : <GameCharadesInitiator username={this.state.username} />
       break
       case 3:
-      return  document.location.hash === "#1" ? <GameAudiooReceiver username={this.state.username} /> : <GameAudiooInitiator username={this.state.username} /> 
+      // this.modeSnack(3)
+      return  document.location.hash === "#1" ? <GameAudiooReceiver username={this.state.username} /> : <GameAudiooInitiator username={this.state.username} />
       break
     }
   }
@@ -36,8 +64,12 @@ export default class GameView extends Component {
 
   render() {
     return (
-      <div id="game-view">
+      <div id="game-view" >
+        <div className="App-title">
+        {this.modeSnack(this.props.gameMode)} </div>
+        <div>
         {this.viewSwitch()}
+      </div>
       </div>
     )
   }

@@ -32,6 +32,11 @@ export default class GameContainer extends Component {
     // console.log(this.setGameArray())
   }
 
+    // After setting State, it checks for the round - maybe it should check for more?
+  componentDidUpdate(){
+    this.checkRound() ? this.endGame() : ''
+  }
+
   topicClickOpen = () => {
     this.setState({ topicSelectOpen: true });
   };
@@ -102,6 +107,17 @@ export default class GameContainer extends Component {
     this.refs.ScoreChannel.perform('onGameChange', {gameHash})
   }
 
+  // modeSnack = (gameMode) => {
+  //   console.log(this.state)
+  //   if(gameMode === 0){
+  //     this.snackbarSend(`DRAW!!!`)
+  //   } else if (gameMode ===  1){
+  //     this.snackbarSend(`MIME!!!`)
+  //   } else {
+  //     this.snackbarSend(`TALK!!!`)
+  //   }
+  // }
+
     // Upon Reception of the data, this function breaks down the channel data
   dataReceived = (e) => {
 
@@ -138,11 +154,6 @@ export default class GameContainer extends Component {
         performer: gameHash.performer
       }))
     }
-  }
-
-    // After setting State, it checks for the round - maybe it should check for more?
-  componentDidUpdate(){
-    this.checkRound() ? this.endGame() : ''
   }
 
   setScore = (e) => {
@@ -222,7 +233,7 @@ export default class GameContainer extends Component {
           channel={{channel: 'ChatChannel'}}
           onReceived={this.messageHandle}
          /> */}
-        <GameView gameMode={this.state.gameSwitch[this.state.round - 1]}/>
+        <GameView sendSnackMode={this.modeSnack} gameMode={this.state.gameSwitch[this.state.round - 1]}/>
 
         <div id="snackbar-wrap">
           <Snackbar
