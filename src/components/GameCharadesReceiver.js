@@ -1,5 +1,6 @@
 import React,  { Component } from 'react'
 import { ActionCable } from 'react-actioncable-provider'
+require('events').EventEmitter.prototype._maxListeners = 100
 const Peer = require('simple-peer')
 
 let p1
@@ -22,7 +23,7 @@ export default class GameCharades extends Component {
 
         this.setState({signal: {}}, () => {
           p1.signal(signal)
-          p1.on('signal', (data) => {
+          p1.once('signal', (data) => {
             console.log('p1 signal', data)
             this.sendSignal('send_signal', {rec_signal: data})
           })
@@ -43,7 +44,7 @@ export default class GameCharades extends Component {
       p1.on('error', (error) => console.error('p1 error', error))
       p1.on('close', () => {
         console.log('p1 connection closed')
-        p1.removeListener('signal', () => {})
+        p1.removeListener('signal', p1.signal)
         // this.initPeer()
       })
     }
@@ -57,7 +58,7 @@ export default class GameCharades extends Component {
       })
     }
     if(e.data.reconnect) {
-      // p1.destroy()
+      p1.destroy()
       this.initPeer()
       console.log("RECONNECTING")
     }
