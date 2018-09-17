@@ -37,7 +37,7 @@ export default class LoginForm extends React.Component{
 
   render () {
     if (this.props.loggedIn){
-      return <Redirect to='/gameon'/>
+      return <Redirect to='/gameon#1'/>
     } else {
       return(
         <div>

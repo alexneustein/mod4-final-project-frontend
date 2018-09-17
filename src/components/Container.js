@@ -8,6 +8,8 @@ import AuthWrapper from '../hoc/authWrapper'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
+const RAILS_URL = "http://10.39.107.135:3000"
+
 class Container extends Component {
 
   state = {
@@ -19,7 +21,7 @@ class Container extends Component {
 
 
   componentDidMount(){
-    fetch('http://localhost:3000/topics')
+    fetch(`${RAILS_URL}/topics`)
       .then(r=>r.json())
       .then(resp => {
         this.setState({

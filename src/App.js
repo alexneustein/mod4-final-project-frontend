@@ -9,13 +9,15 @@ import LoginForm from './components/LoginForm'
 
 import {Route, Switch, Redirect} from 'react-router-dom'
 
+const RAILS_URL = "http://10.39.107.135:3000"
+
 class App extends Component {
   // username: 'peterthegeek', id: 1
 
   state = {
-    currentUser: {}
+    // currentUser: {}
     // currentUser: {username: 'peterthegeek', id: 1},
-    // currentUser: {username: 'dan', id: 2},
+    currentUser: {username: 'dan', id: 2},
     // messages: []
   }
 
@@ -28,7 +30,7 @@ class App extends Component {
 
   setCurrentUser = (newUser) => {
     const bodyObj = {...newUser}
-    return fetch('http://localhost:3000/login', {
+    return fetch(`${RAILS_URL}/login`, {
       method: 'POST',
       // mode: 'no-cors',
       headers: {
@@ -51,7 +53,7 @@ class App extends Component {
 
   signUpUser = (newUser) => {
     const bodyObj = {...newUser}
-    return fetch('http://localhost:3000/players', {
+    return fetch(`${RAILS_URL}/players`, {
       method: 'POST',
       // mode: 'no-cors',
       headers: {
@@ -70,8 +72,8 @@ class App extends Component {
 
   render() {
     // console.log(this.state)
-    const loggedIn = !!this.state.currentUser.id
-    // const loggedIn = true
+    // const loggedIn = !!this.state.currentUser.id
+    const loggedIn = true
     return (
       <div className="App">
         <Fragment>

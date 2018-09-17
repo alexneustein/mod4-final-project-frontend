@@ -10,6 +10,8 @@ import Fade from '@material-ui/core/Fade'
 import TimeBar from '../MaterialComponents/TimeBar'
 import TopicSelect from '../MaterialComponents/TopicSelect'
 
+const RAILS_URL = "http://10.39.107.135:3000"
+
 export default class GameContainer extends Component {
 
   state = {
@@ -70,7 +72,7 @@ export default class GameContainer extends Component {
       topicId: topicId
     })
       // The component updates before the fetch, but we don't want to send the game object before we have the data
-    fetch(`http://localhost:3000/games`, {
+    fetch(`${RAILS_URL}/games`, {
       method: 'POST',
       headers: {
         'Content-Type':'application/json'
@@ -210,7 +212,7 @@ export default class GameContainer extends Component {
       gameOn: false,
       gameSwitch: [0]
     })
-    fetch(`http://localhost:3000/games/${gameID}`, {
+    fetch(`${RAILS_URL}/games/${gameID}`, {
       method: 'PATCH',
       headers: {
         'Content-Type':'application/json'

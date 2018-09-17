@@ -9,8 +9,8 @@ import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
 
-  <ActionCableProvider url='ws://localhost:3000/cable'>
-  {/* <ActionCableProvider url='ws://10.39.105.57:3000/cable'> */}
+
+  <ActionCableProvider url='ws://10.39.107.135:3000/cable'>
   <Router>
     <App />
   </Router>
